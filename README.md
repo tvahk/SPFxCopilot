@@ -1,57 +1,52 @@
 # SPFxCopilot
 
-Learn to build **Microsoft 365 Copilot agents with the SharePoint Framework (SPFx) + React**, and build your own here - without re-inventing what the community already ships.
+My workspace for learning to build Microsoft 365 Copilot agents with the SharePoint Framework (SPFx).
 
-> **What this actually is:** "SharePoint Copilot Apps" / "Copilot Components" - SPFx client-side UI that renders *inside* Microsoft 365 Copilot, packaged with a **declarative agent**, that can expand to **open a full app** (the component's `fullscreen` display mode). Ships in **SPFx 1.24 public preview**. Not 1.21.
+SPFx 1.24 (public preview) adds **Copilot Components**: React UI that renders inside a Microsoft 365 Copilot chat, packaged with a declarative agent, and able to expand to fullscreen. I wanted to understand how they work end to end, so this repo holds my notes, the study code I wrote along the way, and the first agent I built with it.
 
-## Start here
+It's a personal project, shared in case it's useful to anyone else going down the same path. It's preview tech, so things here may go out of date quickly.
 
-1. **Open the learning hub:** online at **[tvahk.github.io/SPFxCopilot](https://tvahk.github.io/SPFxCopilot/)**, or open [`learn/index.html`](learn/index.html) locally. Curated links, guided path, prerequisites, scaffold flow, project anatomy, build/deploy cheat-sheet, best practices.
-2. **Follow the docs** as you go - see below.
-3. **Scaffold your first agent** in [`agents/`](agents/).
+## What's here
 
-## Layout
+| Folder | What it is |
+|--------|------------|
+| [`learn/`](learn/) | A single-page learning hub I put together: links, prerequisites, the scaffold flow, project anatomy, and build and deploy notes. Open [`learn/index.html`](learn/index.html) in a browser, or view it online at [tvahk.github.io/SPFxCopilot](https://tvahk.github.io/SPFxCopilot/). |
+| [`docs/`](docs/) | My longer notes: [glossary](docs/00-glossary.md), [prerequisites](docs/01-prerequisites.md), [scaffolding](docs/02-scaffold-first-agent.md), [project anatomy](docs/03-project-anatomy.md), [build, run and deploy](docs/04-build-run-deploy.md), [best practices](docs/05-best-practices.md), [declarative agent JSON](docs/06-declarative-agent-schema.md), [skills and tooling](docs/07-skills-and-tooling.md), and the [Site Snapshot scenario](docs/scenario-01-site-snapshot.md). |
+| [`reference/`](reference/) | Annotated study code I used to understand the moving parts. Read it, but it's not a buildable project. |
+| [`agents/site-snapshot/`](agents/site-snapshot/) | The agent I built: a SharePoint site health check. See below. |
 
-| Folder | What's in it |
-|--------|--------------|
-| [`learn/`](learn/) | The self-contained HTML learning hub (offline, theme-aware). |
-| [`docs/`](docs/) | Deep-dive reference: [00 glossary](docs/00-glossary.md), [01 prerequisites](docs/01-prerequisites.md), [02 scaffold](docs/02-scaffold-first-agent.md), [03 anatomy](docs/03-project-anatomy.md), [04 build/run/deploy](docs/04-build-run-deploy.md), [05 best practices](docs/05-best-practices.md), [06 declarative agent JSON reference](docs/06-declarative-agent-schema.md), [07 skills and tooling](docs/07-skills-and-tooling.md), and **[Scenario 01 - Site Snapshot](docs/scenario-01-site-snapshot.md)** (your first build). |
-| [`reference/`](reference/) | Hand-written **annotated study code** (read to learn - not a buildable project). |
-| [`agents/`](agents/) | Your real scaffolded SPFx Copilot App solutions (one per subfolder). |
+## Site Snapshot
 
-## The stack (pinned)
+My first real build. Ask Copilot to check a site, and it shows a health score with the detail behind it: stale documents, external and "Anyone" sharing, duplicates, large and empty files, and a breakdown by file type and owner. The inline card expands to a fullscreen dashboard where you can export to CSV or email yourself a summary, and you can ask follow-up questions about the results in chat.
 
-Node **22** · React **18** · TypeScript **5.x** · Fluent UI **v8** · build with **Heft** (not gulp) · generator `@microsoft/generator-sharepoint@next`.
+Under the hood it uses the brokered Microsoft Graph client, Fluent UI v9, Zod tool parameters, and Jest tests for the scoring. The [README](agents/site-snapshot/README.md) explains how to build and deploy it.
 
-## Quick scaffold
+## Versions I'm using
+
+Node 22 · React 18 · TypeScript 5.8 · Fluent UI v9 · Heft (not gulp) · `@microsoft/generator-sharepoint@next` (1.24.0-beta.3)
+
+To scaffold your own, the walkthrough is in [`docs/02-scaffold-first-agent.md`](docs/02-scaffold-first-agent.md):
 
 ```powershell
 nvm use 22
 npm i @microsoft/generator-sharepoint@next -g
 cd agents && mkdir my-first-copilot-app && cd my-first-copilot-app
-yo @microsoft/sharepoint      # → Copilot Component → HelloAgent → React (runs npm install for you)
-npx heft start --nobrowser    # test in the Copilot Workbench (heft is local - prefix with npx)
+yo @microsoft/sharepoint      # Copilot Component, then React
+npx heft start --nobrowser    # test in the Copilot Workbench
 ```
 
-Full walkthrough: [`docs/02-scaffold-first-agent.md`](docs/02-scaffold-first-agent.md).
+## Things I learned the hard way
 
-## What to build first
-
-**[Scenario 01 - Site Snapshot](docs/scenario-01-site-snapshot.md):** a SharePoint governance co-pilot that gives an on-demand **health snapshot** of a site (storage, stale docs, external sharing, largest files) as an opinionated score inside Copilot - and can **export/email** it. Useful day one, teaches every core mechanic, and ships with liftable code in [`reference/scenario-site-snapshot/`](reference/scenario-site-snapshot/) (the health-score model is ready to use). Build it in milestones M0→M6.
-
-Then build it hands-on with the **[Vol 2 build-along page](learn/vol2-site-snapshot.html)**: a full solution skeleton using Fluent UI, PnPjs, and the PnP React controls, with a presentation-first data seam (build on mock data, then swap in real Graph). Skeleton in [`reference/scenario-site-snapshot/`](reference/scenario-site-snapshot/).
-
-## Finished example
-
-[`agents/site-snapshot/`](agents/site-snapshot/) is the complete, buildable Site Snapshot solution built from Scenario 01: inline score card and fullscreen dashboard, brokered Microsoft Graph, model context for follow-up questions, and Jest tests. See its [README](agents/site-snapshot/README.md) to build and deploy it.
+- **Copilot can't see your card.** When the agent calls a component tool, the model only learns that a card was shown, not what's in it. To let it answer follow-ups, push the results back with `copilotBridge.updateModelContextAsync`.
+- **Give each agent its own Teams app ID.** If you copy `copilot/manifest.json` between projects, Teams treats both as the same app and the sync quietly does nothing.
+- **Bump both versions on every deploy:** `solution.version` in `package-solution.json` and `version` in `copilot/manifest.json`.
+- **Don't upload the `teams/*.zip` by hand.** It contains a `{{TENANT_MCP_URL}}` placeholder that only **Add to Teams** fills in.
+- **Custom apps may need approving.** In Teams admin center the agent can show up as *Submitted* or *Blocked* until you publish and allow it.
 
 ## Caveats
 
-- **Public preview** - APIs, file names, and schema versions change. Trust your scaffold over the docs when they disagree, and update the docs.
-- **Sandbox/dev tenant only** until GA. No marketplace distribution in preview. No Copilot license required during preview.
-
----
-*This feature is in preview. Verify against the official Microsoft Learn links in the hub.*
+- Preview only: build on a sandbox or developer tenant. APIs, file names and schemas may change before general availability.
+- When my notes and your scaffold disagree, trust the scaffold. The generator moves quickly.
 
 ## License
 
