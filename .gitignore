@@ -28,3 +28,8 @@ npm-debug.log*
 .vs/
 .DS_Store
 Thumbs.db
+
+# Local only: AI assistant notes, working log, and the untouched generator playground
+CLAUDE.md
+ROADMAP.md
+agents/my-first-copilot-app/

@@ -32,7 +32,7 @@ Everything else is a detail of that sentence.
 A Copilot Component declares which **display modes** it supports (`capabilities.availableDisplayModes` in its manifest) and renders differently in each:
 
 - **`inline`** - renders compactly *inside the chat conversation*. The default. Think: a card, a small interactive widget in the message stream.
-- **`fullscreen`** - **expands to occupy the full Copilot surface**. This is the *"the agent opens a full app"* experience you asked about - a real, full-canvas React app launched from a chat.
+- **`fullscreen`** - **expands to occupy the full Copilot surface**. This is the *"the agent opens a full app"* experience - a real, full-canvas React app launched from a chat.
 
 Your code reads the current mode and can request expansion:
 

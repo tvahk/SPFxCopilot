@@ -112,6 +112,6 @@ For inline styles, derive colors from the host theme rather than literals. Add `
 
 ---
 
-## When you ask Claude for help
+## When you use an AI coding assistant
 
-Point me at this repo's `CLAUDE.md` - it pins these versions/commands so I don't regress you to gulp/Node 18/React 17. Tell me which generator beta you scaffolded on if behavior diverges from these docs.
+Give it the pinned stack from this page (Node 22, Heft, the `@next` generator, React 18) before you start, so it doesn't fall back to older SPFx defaults such as gulp, Node 18 or React 17. Tell it which generator beta you scaffolded on (see `.yo-rc.json`) if behavior diverges from these docs.

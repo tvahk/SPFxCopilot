@@ -174,4 +174,4 @@ If it only renders sample data, it's not finished - the whole point is that it t
 - **Cross-cutting helpers:** pull `graphGet`, `cached()`, `exportToCsv`, `getFriendlyError`, `getThemeColors` from the `spfx-development` skill conventions (in [05-best-practices.md](05-best-practices.md)) - don't rewrite them.
 - **Graph-call patterns:** peek at `react-copilot-apis-explorer` for how it calls Graph from a component - borrow the technique, not the app.
 
-When you're ready to build, scaffold in [`../agents/`](../agents/) and ask Claude for help - point it at [`../CLAUDE.md`](../CLAUDE.md) and this file.
+When you're ready to build, scaffold in [`../agents/`](../agents/) and work through the milestones in this file. The finished result is in [`../agents/site-snapshot/`](../agents/site-snapshot/).

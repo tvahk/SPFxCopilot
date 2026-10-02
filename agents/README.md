@@ -36,4 +36,4 @@ agents/
 - **Preview** feature - sandbox/dev tenant only until GA.
 - Each scaffolded solution brings its own `.gitignore`; keep `node_modules/`, `lib/`, `dist/`, `temp/`, `*.sppkg` out of git.
 
-> When you want help building here, tell Claude to read [`../CLAUDE.md`](../CLAUDE.md) first so it uses the right versions and commands.
+> Using an AI coding assistant? Give it the pinned stack in [`../docs/05-best-practices.md`](../docs/05-best-practices.md) first, so it uses the right versions and commands.

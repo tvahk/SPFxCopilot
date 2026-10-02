@@ -2,7 +2,7 @@
 
 > **Status:** Preview era. Names and features move. Verify against the linked docs.
 
-You asked whether you can build "skills". The short answer is yes, but the word "skill" means three different things in this ecosystem, and only one of them is literally an artifact you author. This doc separates them clearly, then lists the helper tools worth having.
+Can you build "skills" for Copilot? Yes, but the word "skill" means three different things in this ecosystem, and only one of them is literally an artifact you author. This doc separates them clearly, then lists the helper tools worth having.
 
 ## The word "skill" means three different things
 
@@ -48,7 +48,7 @@ This is the one that matters most for you. A Copilot Component declares **tools*
 
 **A declarative agent with actions.** Pro-code, using the Agents Toolkit. Scaffold an agent (`atk new -c declarative-agent`), edit `declarativeAgent.json` to add capabilities and conversation starters, then add an action from an OpenAPI document or an MCP server, and provision it. Optionally author the whole thing in TypeSpec.
 
-**A SharePoint Copilot App (your main path).** Pro-code, using SPFx. This is covered end to end in [02-scaffold-first-agent.md](02-scaffold-first-agent.md) through [04-build-run-deploy.md](04-build-run-deploy.md). Your tools live in the component manifest, and they become the agent's actions.
+**A SharePoint Copilot App (the main path in this hub).** Pro-code, using SPFx. This is covered end to end in [02-scaffold-first-agent.md](02-scaffold-first-agent.md) through [04-build-run-deploy.md](04-build-run-deploy.md). Your tools live in the component manifest, and they become the agent's actions.
 
 ---
 

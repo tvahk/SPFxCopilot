@@ -18,7 +18,6 @@ Learn to build **Microsoft 365 Copilot agents with the SharePoint Framework (SPF
 | [`docs/`](docs/) | Deep-dive reference: [00 glossary](docs/00-glossary.md), [01 prerequisites](docs/01-prerequisites.md), [02 scaffold](docs/02-scaffold-first-agent.md), [03 anatomy](docs/03-project-anatomy.md), [04 build/run/deploy](docs/04-build-run-deploy.md), [05 best practices](docs/05-best-practices.md), [06 declarative agent JSON reference](docs/06-declarative-agent-schema.md), [07 skills and tooling](docs/07-skills-and-tooling.md), and **[Scenario 01 - Site Snapshot](docs/scenario-01-site-snapshot.md)** (your first build). |
 | [`reference/`](reference/) | Hand-written **annotated study code** (read to learn - not a buildable project). |
 | [`agents/`](agents/) | Your real scaffolded SPFx Copilot App solutions (one per subfolder). |
-| [`CLAUDE.md`](CLAUDE.md) | Pinned versions/commands so Claude helps correctly. Point Claude here first. |
 
 ## The stack (pinned)
 
