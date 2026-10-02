@@ -342,8 +342,8 @@
     <p class="lead">Do these five, in order. Then you'll have shipped an agent and can branch into your own.</p>
     <ol class="steps">
       <li><b>Understand the concept</b> Read <a href="https://learn.microsoft.com/en-us/sharepoint/dev/spfx/copilot/overview-copilot-apps" target="_blank" rel="noopener">Overview of SharePoint Copilot Apps</a> - how components + a declarative agent form one solution.</li>
-      <li><b>Set up your machine &amp; tenant</b> Follow <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/01-prerequisites.md" target="_blank" rel="noopener">docs/01-prerequisites</a> (Node 22, <code>@next</code> generator, dev cert, tenant, Copilot Workbench).</li>
-      <li><b>Build your first agent</b> Do the official <a href="https://learn.microsoft.com/en-us/sharepoint/dev/spfx/copilot/get-started/build-your-first-copilot-app" target="_blank" rel="noopener">Build your first SharePoint Copilot App</a> tutorial end-to-end, mirroring <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/02-scaffold-first-agent.md" target="_blank" rel="noopener">docs/02</a>.</li>
+      <li><b>Set up your machine &amp; tenant</b> Follow <a href="https://github.com/tvahk/SPFxCopilot/blob/main/docs/01-prerequisites.md" target="_blank" rel="noopener">docs/01-prerequisites</a> (Node 22, <code>@next</code> generator, dev cert, tenant, Copilot Workbench).</li>
+      <li><b>Build your first agent</b> Do the official <a href="https://learn.microsoft.com/en-us/sharepoint/dev/spfx/copilot/get-started/build-your-first-copilot-app" target="_blank" rel="noopener">Build your first SharePoint Copilot App</a> tutorial end-to-end, mirroring <a href="https://github.com/tvahk/SPFxCopilot/blob/main/docs/02-scaffold-first-agent.md" target="_blank" rel="noopener">docs/02</a>.</li>
       <li><b>Learn the manifest</b> Skim the <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/declarative-agent-manifest-1.8" target="_blank" rel="noopener">Declarative agent schema 1.8</a> so you can shape instructions, starters, and actions deliberately.</li>
       <li><b>Study real React samples</b> Browse the <a href="https://github.com/pnp/spfx-copilot-apps" target="_blank" rel="noopener">pnp/spfx-copilot-apps</a> repo and the React Copilot samples in <a href="https://github.com/pnp/sp-dev-fx-webparts" target="_blank" rel="noopener">sp-dev-fx-webparts</a> - reuse, don't reinvent.</li>
     </ol>
@@ -352,7 +352,7 @@
   <!-- PREREQS -->
   <section id="prereqs">
     <h2><span class="num">03</span> Prerequisites checklist</h2>
-    <p class="lead">Tick these off (saved in your browser). Full detail in <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/01-prerequisites.md" target="_blank" rel="noopener">docs/01-prerequisites</a>.</p>
+    <p class="lead">Tick these off (saved in your browser). Full detail in <a href="https://github.com/tvahk/SPFxCopilot/blob/main/docs/01-prerequisites.md" target="_blank" rel="noopener">docs/01-prerequisites</a>.</p>
     <ul class="checklist" id="prereqCheck">
       <li><input type="checkbox" id="p1"><label for="p1"><b>Node.js 22</b> active <span class="hint"><code>nvm use 22</code> → <code>node -v</code> shows v22.x. Not 18/20.</span></label></li>
       <li><input type="checkbox" id="p2"><label for="p2"><b>Preview generator</b> installed <span class="hint"><code>npm i @microsoft/generator-sharepoint@next -g</code> - must resolve to 1.24 beta 2+.</span></label></li>
@@ -402,21 +402,21 @@ npm install react@18 react-dom@18 --save-exact
 <span class="cmt"># Step 4: open the project, then read docs/03-project-anatomy.md alongside it</span>
 code .</pre>
     </div>
-    <div class="callout">Compare your generated files against the annotated <a href="https://github.com/tvahk/spfx-copilot-learning-hub/tree/main/reference/" target="_blank" rel="noopener">reference/</a> study code - same pieces, explained line by line.</div>
+    <div class="callout">Compare your generated files against the annotated <a href="https://github.com/tvahk/SPFxCopilot/tree/main/reference/" target="_blank" rel="noopener">reference/</a> study code - same pieces, explained line by line.</div>
 
     <div class="card" style="margin-top:18px; border-left:3px solid var(--accent-2)">
       <h3 style="display:flex;align-items:center;gap:8px">🏥 What to build first - <span style="color:var(--accent-2)">Site Snapshot</span></h3>
       <p style="margin:6px 0 10px">A SharePoint governance co-pilot that gives an on-demand <b>health snapshot</b> of a site - storage pressure, stale docs, external sharing, largest files - as an opinionated <b>score</b> inside Copilot, and can <b>export or email</b> it. Useful on day one, teaches every core mechanic (tools, Zod, real Graph reads, a real send-mail action, inline + fullscreen), and it <i>computes</i> rather than just displays - so it's not a community clone.</p>
       <p style="margin:0 0 6px">Follow the step-by-step build-along: <a href="vol2-site-snapshot.html"><b>Vol 2 - Build Site Snapshot</b></a>. It walks the full solution (Fluent UI, PnPjs, PnP controls) milestone by milestone.</p>
-      <p style="margin:0 0 6px">The spec behind it is <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/scenario-01-site-snapshot.md" target="_blank" rel="noopener">docs/scenario-01-site-snapshot.md</a>.</p>
-      <p style="margin:0">The finished skeleton lives in <a href="https://github.com/tvahk/spfx-copilot-learning-hub/tree/main/reference/scenario-site-snapshot/" target="_blank" rel="noopener">reference/scenario-site-snapshot/</a>, where the health-score model works as-is.</p>
+      <p style="margin:0 0 6px">The spec behind it is <a href="https://github.com/tvahk/SPFxCopilot/blob/main/docs/scenario-01-site-snapshot.md" target="_blank" rel="noopener">docs/scenario-01-site-snapshot.md</a>.</p>
+      <p style="margin:0">The finished skeleton lives in <a href="https://github.com/tvahk/SPFxCopilot/tree/main/reference/scenario-site-snapshot/" target="_blank" rel="noopener">reference/scenario-site-snapshot/</a>, where the health-score model works as-is.</p>
     </div>
   </section>
 
   <!-- ANATOMY -->
   <section id="anatomy">
     <h2><span class="num">05</span> Project anatomy - what got built &amp; why</h2>
-    <p class="lead">A Copilot App is made of three zones. Expand each one to see the files it contains and what each file is for. The full write-up is in <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/03-project-anatomy.md" target="_blank" rel="noopener">docs/03</a>, and every JSON property of the agent files is listed in <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/06-declarative-agent-schema.md" target="_blank" rel="noopener">docs/06</a>.</p>
+    <p class="lead">A Copilot App is made of three zones. Expand each one to see the files it contains and what each file is for. The full write-up is in <a href="https://github.com/tvahk/SPFxCopilot/blob/main/docs/03-project-anatomy.md" target="_blank" rel="noopener">docs/03</a>, and every JSON property of the agent files is listed in <a href="https://github.com/tvahk/SPFxCopilot/blob/main/docs/06-declarative-agent-schema.md" target="_blank" rel="noopener">docs/06</a>.</p>
 
     <details class="acc" open>
       <summary>Zone 1 - <code>src/copilotComponents/helloAgent/</code> (your code)</summary>
@@ -571,7 +571,7 @@ code .</pre>
   <!-- DEPLOY -->
   <section id="deploy">
     <h2><span class="num">06</span> Build, run &amp; deploy cheat-sheet</h2>
-    <p class="lead">Heft toolchain (no gulp). Full detail: <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/04-build-run-deploy.md" target="_blank" rel="noopener">docs/04</a>.</p>
+    <p class="lead">Heft toolchain (no gulp). Full detail: <a href="https://github.com/tvahk/SPFxCopilot/blob/main/docs/04-build-run-deploy.md" target="_blank" rel="noopener">docs/04</a>.</p>
 
     <div class="grid cols-3">
       <div class="card">
@@ -604,8 +604,8 @@ npx heft package-solution --production</pre></div>
 
     <div class="subhead">Deeper reference in this repo</div>
     <div class="reslist">
-      <a class="res" href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/06-declarative-agent-schema.md" target="_blank" rel="noopener"><div class="t">Declarative agent JSON reference</div><div class="u">docs/06-declarative-agent-schema.md</div><div class="d">Every property of the declarative agent manifest (v1.8) and the API plugin manifest (v2.4), including the full capabilities list.</div></a>
-      <a class="res" href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/07-skills-and-tooling.md" target="_blank" rel="noopener"><div class="t">Skills, and the tooling around agents</div><div class="u">docs/07-skills-and-tooling.md</div><div class="d">What "skills" really means (three different things), how to build each, knowledge sources, and the helper tools worth having.</div></a>
+      <a class="res" href="https://github.com/tvahk/SPFxCopilot/blob/main/docs/06-declarative-agent-schema.md" target="_blank" rel="noopener"><div class="t">Declarative agent JSON reference</div><div class="u">docs/06-declarative-agent-schema.md</div><div class="d">Every property of the declarative agent manifest (v1.8) and the API plugin manifest (v2.4), including the full capabilities list.</div></a>
+      <a class="res" href="https://github.com/tvahk/SPFxCopilot/blob/main/docs/07-skills-and-tooling.md" target="_blank" rel="noopener"><div class="t">Skills, and the tooling around agents</div><div class="u">docs/07-skills-and-tooling.md</div><div class="d">What "skills" really means (three different things), how to build each, knowledge sources, and the helper tools worth having.</div></a>
     </div>
 
     <div class="subhead">Official - Microsoft Learn (SPFx &amp; Copilot Apps)</div>
@@ -670,7 +670,7 @@ npx heft package-solution --production</pre></div>
   <!-- BEST PRACTICES -->
   <section id="practices">
     <h2><span class="num">08</span> Best practices &amp; gotchas</h2>
-    <p class="lead">The short version. Full list: <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/05-best-practices.md" target="_blank" rel="noopener">docs/05</a>.</p>
+    <p class="lead">The short version. Full list: <a href="https://github.com/tvahk/SPFxCopilot/blob/main/docs/05-best-practices.md" target="_blank" rel="noopener">docs/05</a>.</p>
     <div class="grid cols-2">
       <div class="card"><h3>Pin your versions</h3><p>Use Node 22, React 18 (installed with <code>--save-exact</code>), TypeScript 5.x, and Fluent UI v8. Do not use Fluent UI v9. Version drift is the most common cause of the React #300 error.</p></div>
       <div class="card"><h3>Use Heft, not gulp</h3><p>The build tool changed in SPFx 1.22. Run <code>npx heft start</code>, <code>npx heft build</code>, and <code>npx heft package-solution</code> instead of the old gulp commands. Heft is a local dependency, so prefix with <code>npx</code> (or use <code>npm start</code>).</p></div>
@@ -683,7 +683,7 @@ npx heft package-solution --production</pre></div>
     </div>
 
     <div class="callout" style="margin-top:20px">
-      <b>Getting help from Claude as you build:</b> tell it to read this repo's <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/CLAUDE.md" target="_blank" rel="noopener"><code>CLAUDE.md</code></a> first - it pins these versions and commands so you don't get regressed to gulp / Node 18 / React 17. Mention which generator beta you're on if behavior diverges from these docs.
+      <b>Getting help from Claude as you build:</b> tell it to read this repo's <a href="https://github.com/tvahk/SPFxCopilot/blob/main/CLAUDE.md" target="_blank" rel="noopener"><code>CLAUDE.md</code></a> first - it pins these versions and commands so you don't get regressed to gulp / Node 18 / React 17. Mention which generator beta you're on if behavior diverges from these docs.
     </div>
   </section>
 

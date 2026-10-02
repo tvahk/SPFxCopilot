@@ -154,7 +154,7 @@
       <span class="chip"><b>inline</b> + <b>fullscreen</b></span>
       <span class="chip"><b>3</b> tools</span>
     </div>
-    <div class="callout">Finish the Vol 1 setup first (Node 22, the preview generator, a tenant, and the Copilot Workbench). See <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/01-prerequisites.md" target="_blank" rel="noopener">docs/01-prerequisites</a>. The spec behind this build is <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/scenario-01-site-snapshot.md" target="_blank" rel="noopener">docs/scenario-01</a>.</div>
+    <div class="callout">Finish the Vol 1 setup first (Node 22, the preview generator, a tenant, and the Copilot Workbench). See <a href="https://github.com/tvahk/SPFxCopilot/blob/main/docs/01-prerequisites.md" target="_blank" rel="noopener">docs/01-prerequisites</a>. The spec behind this build is <a href="https://github.com/tvahk/SPFxCopilot/blob/main/docs/scenario-01-site-snapshot.md" target="_blank" rel="noopener">docs/scenario-01</a>.</div>
   </div>
 
   <!-- WHAT YOU BUILD -->
@@ -225,7 +225,7 @@ npm install @fluentui/react@^8 @pnp/sp@^4 @pnp/graph@^4 @pnp/spfx-controls-react
   <!-- STRUCTURE -->
   <section id="tree">
     <h2><span class="num">04</span> The folder structure</h2>
-    <p class="lead">A clean layer per job, the way a real SPFx app is organised. The full skeleton is in <a href="https://github.com/tvahk/spfx-copilot-learning-hub/tree/main/reference/scenario-site-snapshot/" target="_blank" rel="noopener">reference/scenario-site-snapshot/</a>.</p>
+    <p class="lead">A clean layer per job, the way a real SPFx app is organised. The full skeleton is in <a href="https://github.com/tvahk/SPFxCopilot/tree/main/reference/scenario-site-snapshot/" target="_blank" rel="noopener">reference/scenario-site-snapshot/</a>.</p>
     <div class="code"><button class="copy">Copy</button><pre>src/copilotComponents/siteSnapshot/
   SiteSnapshotCopilotComponent.ts          <span class="cmt"># thin class (entry point)</span>
   SiteSnapshotCopilotComponent.manifest.json
@@ -266,7 +266,7 @@ copilot/  declarativeAgent.json  ai-plugin.json  instruction.txt  manifest.json<
   <!-- CONVENTIONS -->
   <section id="conventions">
     <h2><span class="num">05</span> Conventions we follow</h2>
-    <p class="lead">The same rules you use on your own SPFx apps. Full list in <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/05-best-practices.md" target="_blank" rel="noopener">docs/05</a>.</p>
+    <p class="lead">The same rules you use on your own SPFx apps. Full list in <a href="https://github.com/tvahk/SPFxCopilot/blob/main/docs/05-best-practices.md" target="_blank" rel="noopener">docs/05</a>.</p>
     <div class="grid cols-2">
       <div class="card"><h3>SCSS modules, not inline styles</h3><p>Layout and spacing live in <code>.module.scss</code> files. Fluent themes the controls. The only inline style is a CSS variable driven by data, like the score ring fill.</p></div>
       <div class="card"><h3>One service per domain</h3><p>All data access sits in <code>services/</code> behind the seam. Components never call Graph.</p></div>
@@ -285,7 +285,7 @@ copilot/  declarativeAgent.json  ai-plugin.json  instruction.txt  manifest.json<
     <details class="acc" open>
       <summary><span class="mnum">M0</span> Plumbing and dependencies</summary>
       <div class="body">
-        <p>Scaffold a Copilot Component (React) as in <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/02-scaffold-first-agent.md" target="_blank" rel="noopener">docs/02</a>, install the libraries, and get a thin class rendering a placeholder in both display modes.</p>
+        <p>Scaffold a Copilot Component (React) as in <a href="https://github.com/tvahk/SPFxCopilot/blob/main/docs/02-scaffold-first-agent.md" target="_blank" rel="noopener">docs/02</a>, install the libraries, and get a thin class rendering a placeholder in both display modes.</p>
         <div class="code"><button class="copy">Copy</button><pre><span class="cmt">// SiteSnapshotCopilotComponent.ts - keep it thin</span>
 export default class SiteSnapshotCopilotComponent
   extends BaseCopilotComponent&lt;typeof AnalyzeSiteProperties&gt; {
@@ -397,7 +397,7 @@ const perms = await drive.items.getById(id).permissions();   <span class="cmt">/
       <li><input type="checkbox" id="a4"><label for="a4"><b>A real email.</b> <span class="hint">You can email yourself the snapshot and receive a readable summary.</span></label></li>
       <li><input type="checkbox" id="a5"><label for="a5"><b>Graceful failure.</b> <span class="hint">A site you cannot access, or an empty library, shows a friendly message.</span></label></li>
     </ul>
-    <div class="callout">Deploy the finished app with the steps in <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/04-build-run-deploy.md" target="_blank" rel="noopener">docs/04</a>. The whole skeleton is in <a href="https://github.com/tvahk/spfx-copilot-learning-hub/tree/main/reference/scenario-site-snapshot/" target="_blank" rel="noopener">reference/scenario-site-snapshot/</a>. When you want a hand, point Claude at <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/CLAUDE.md" target="_blank" rel="noopener">CLAUDE.md</a> and this page.</div>
+    <div class="callout">Deploy the finished app with the steps in <a href="https://github.com/tvahk/SPFxCopilot/blob/main/docs/04-build-run-deploy.md" target="_blank" rel="noopener">docs/04</a>. The whole skeleton is in <a href="https://github.com/tvahk/SPFxCopilot/tree/main/reference/scenario-site-snapshot/" target="_blank" rel="noopener">reference/scenario-site-snapshot/</a>. When you want a hand, point Claude at <a href="https://github.com/tvahk/SPFxCopilot/blob/main/CLAUDE.md" target="_blank" rel="noopener">CLAUDE.md</a> and this page.</div>
   </section>
 
 </main>

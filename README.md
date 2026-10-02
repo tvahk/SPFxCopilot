@@ -6,7 +6,7 @@ Learn to build **Microsoft 365 Copilot agents with the SharePoint Framework (SPF
 
 ## Start here
 
-1. **Open the learning hub:** online at **[tvahk.github.io/spfx-copilot-learning-hub](https://tvahk.github.io/spfx-copilot-learning-hub/)**, or open [`learn/index.html`](learn/index.html) locally. Curated links, guided path, prerequisites, scaffold flow, project anatomy, build/deploy cheat-sheet, best practices.
+1. **Open the learning hub:** online at **[tvahk.github.io/SPFxCopilot](https://tvahk.github.io/SPFxCopilot/)**, or open [`learn/index.html`](learn/index.html) locally. Curated links, guided path, prerequisites, scaffold flow, project anatomy, build/deploy cheat-sheet, best practices.
 2. **Follow the docs** as you go - see below.
 3. **Scaffold your first agent** in [`agents/`](agents/).
 
