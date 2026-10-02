@@ -1,10 +1,6 @@
 # SPFxCopilot
 
-My workspace for learning to build Microsoft 365 Copilot agents with the SharePoint Framework (SPFx).
-
-SPFx 1.24 (public preview) adds **Copilot Components**: React UI that renders inside a Microsoft 365 Copilot chat, packaged with a declarative agent, and able to expand to fullscreen. I wanted to understand how they work end to end, so this repo holds my notes, the study code I wrote along the way, and the first agent I built with it.
-
-It's a personal project, shared in case it's useful to anyone else going down the same path. It's preview tech, so things here may go out of date quickly.
+A repository for building and testing SPFx Copilot extensions and custom solutions for Microsoft 365 Copilot.
 
 ## What's here
 
