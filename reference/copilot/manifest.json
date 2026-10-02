@@ -1,0 +1,45 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.19/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.19",
+
+  "_studyNote_root": "The M365 / Teams APP MANIFEST. This is how the tenant INSTALLS the agent (identity, icons, IDs). It points at the declarative agent definition. Remove _studyNote_* keys in a real scaffold.",
+
+  "id": "00000000-0000-0000-0000-000000000000",
+  "version": "1.0.0",
+  "packageName": "com.contoso.helloagent",
+
+  "developer": {
+    "name": "Your Company",
+    "websiteUrl": "https://contoso.example",
+    "privacyUrl": "https://contoso.example/privacy",
+    "termsOfUseUrl": "https://contoso.example/terms"
+  },
+
+  "name": {
+    "short": "Hello Agent",
+    "full": "Hello Agent — SPFx Copilot App demo"
+  },
+  "description": {
+    "short": "Greets you and opens a demo dashboard.",
+    "full": "A learning SharePoint Copilot App that greets the user by name and can expand to a full-screen React dashboard inside Microsoft 365 Copilot."
+  },
+
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+
+  "accentColor": "#0078D4",
+
+  "_studyNote_copilotAgents": "This block registers the DECLARATIVE AGENT with the app. The scaffold points it at copilot/declarativeAgent.json.",
+  "copilotAgents": {
+    "declarativeAgents": [
+      {
+        "id": "helloAgent",
+        "file": "declarativeAgent.json"
+      }
+    ]
+  },
+
+  "validDomains": []
+}

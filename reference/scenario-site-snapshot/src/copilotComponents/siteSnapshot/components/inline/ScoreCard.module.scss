@@ -1,0 +1,29 @@
+// Site Snapshot - inline score card styles.
+// Verdict colors live here as SCSS classes, not as inline styles.
+
+.scoreBadge {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+  flex: none;
+}
+
+.siteName {
+  font-weight: 600;
+}
+
+// Verdict modifiers
+.healthy {
+  background-color: #107c10;
+}
+.watch {
+  background-color: #797775;
+}
+.atRisk {
+  background-color: #a4262c;
+}

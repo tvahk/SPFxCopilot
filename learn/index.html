@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SPFx × Microsoft 365 Copilot - Learning Hub</title>
+<style>
+  /* ----------------------------------------------------------------------
+     Self-contained, CSP-safe (no external fonts/scripts/images).
+     Theme-aware (light/dark). Accent = SharePoint blue + Copilot violet.
+  ---------------------------------------------------------------------- */
+  :root {
+    --bg: #f6f7fb;
+    --surface: #ffffff;
+    --surface-2: #f0f2f8;
+    --text: #1b1f2a;
+    --text-dim: #5a6072;
+    --border: #e2e5ee;
+    --accent: #0f6cbd;        /* SharePoint blue */
+    --accent-2: #7b5cff;      /* Copilot violet */
+    --accent-soft: #e7f0fb;
+    --code-bg: #1e2230;
+    --code-text: #e6e8f0;
+    --ok: #107c10;
+    --warn-bg: #fff4ce;
+    --warn-border: #e6c65c;
+    --warn-text: #6a5300;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(20,24,40,.06), 0 8px 24px rgba(20,24,40,.06);
+    --maxw: 1140px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1220;
+      --surface: #171a2b;
+      --surface-2: #1e2236;
+      --text: #eaecf5;
+      --text-dim: #a2a8bd;
+      --border: #2a2f47;
+      --accent: #4aa3e6;
+      --accent-2: #9d86ff;
+      --accent-soft: #1c2740;
+      --code-bg: #0b0e18;
+      --code-text: #e6e8f0;
+      --warn-bg: #3a2f05;
+      --warn-border: #6d5a12;
+      --warn-text: #f0dc94;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:#0f1220;--surface:#171a2b;--surface-2:#1e2236;--text:#eaecf5;--text-dim:#a2a8bd;
+    --border:#2a2f47;--accent:#4aa3e6;--accent-2:#9d86ff;--accent-soft:#1c2740;
+    --code-bg:#0b0e18;--code-text:#e6e8f0;--warn-bg:#3a2f05;--warn-border:#6d5a12;--warn-text:#f0dc94;
+  }
+  :root[data-theme="light"] {
+    --bg:#f6f7fb;--surface:#fff;--surface-2:#f0f2f8;--text:#1b1f2a;--text-dim:#5a6072;
+    --border:#e2e5ee;--accent:#0f6cbd;--accent-2:#7b5cff;--accent-soft:#e7f0fb;
+    --code-bg:#1e2230;--code-text:#e6e8f0;--warn-bg:#fff4ce;--warn-border:#e6c65c;--warn-text:#6a5300;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code, pre, kbd { font-family: 'Cascadia Code', 'Consolas', ui-monospace, monospace; }
+
+  /* ---- top bar ---- */
+  header.topbar {
+    position: sticky; top: 0; z-index: 20;
+    backdrop-filter: saturate(160%) blur(8px);
+    background: color-mix(in srgb, var(--surface) 86%, transparent);
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar-inner {
+    max-width: var(--maxw); margin: 0 auto; padding: 12px 20px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -.2px; }
+  .logo {
+    width: 30px; height: 30px; border-radius: 8px; flex: none;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: grid; place-items: center; color: #fff; font-size: 15px; font-weight: 800;
+  }
+  .nav { margin-left: auto; display: flex; gap: 4px; flex-wrap: wrap; }
+  .nav a {
+    color: var(--text-dim); padding: 6px 10px; border-radius: 8px; font-size: 14px;
+  }
+  .nav a:hover { background: var(--surface-2); color: var(--text); text-decoration: none; }
+  .theme-btn {
+    border: 1px solid var(--border); background: var(--surface); color: var(--text);
+    border-radius: 8px; padding: 6px 10px; cursor: pointer; font-size: 14px;
+  }
+  .theme-btn:hover { background: var(--surface-2); }
+
+  /* ---- layout ---- */
+  main { max-width: var(--maxw); margin: 0 auto; padding: 0 20px 96px; }
+  section { scroll-margin-top: 84px; padding-top: 56px; }
+  h1,h2,h3 { line-height: 1.25; letter-spacing: -.3px; }
+  h2 { font-size: 26px; margin: 0 0 6px; display:flex; align-items:center; gap:10px; }
+  h2 .num {
+    font-size: 14px; font-weight: 700; color: var(--accent-2);
+    border: 1px solid var(--border); border-radius: 999px; padding: 2px 10px; background: var(--surface);
+  }
+  .lead { color: var(--text-dim); font-size: 16px; margin: 2px 0 20px; }
+
+  /* ---- hero ---- */
+  .hero {
+    padding: 64px 0 8px;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600;
+    color: var(--warn-text); background: var(--warn-bg); border: 1px solid var(--warn-border);
+    padding: 5px 12px; border-radius: 999px;
+  }
+  .badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--warn-border); }
+  .hero h1 { font-size: clamp(30px, 4vw, 46px); margin: 16px 0 10px; }
+  .hero h1 .grad {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero p { font-size: 18px; color: var(--text-dim); max-width: 720px; }
+  .hero-meta { display:flex; flex-wrap:wrap; gap: 10px; margin-top: 22px; }
+  .chip {
+    font-size: 13px; background: var(--surface); border: 1px solid var(--border);
+    padding: 6px 12px; border-radius: 999px; color: var(--text-dim);
+  }
+  .chip b { color: var(--text); }
+
+  /* ---- cards / grid ---- */
+  .grid { display: grid; gap: 16px; }
+  .cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .cols-3 { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 820px) { .cols-2, .cols-3 { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow);
+  }
+  .card h3 { margin: 0 0 6px; font-size: 17px; }
+  .card p { margin: 0; color: var(--text-dim); font-size: 14.5px; }
+
+  /* ---- big-picture flow ---- */
+  .flow { display:flex; flex-wrap: wrap; align-items: stretch; gap: 12px; margin-top: 8px; }
+  .flow .node {
+    flex: 1 1 200px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px; position: relative;
+  }
+  .flow .node .k { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--accent-2); font-weight: 700; }
+  .flow .node h4 { margin: 6px 0 4px; font-size: 15px; }
+  .flow .node p { margin: 0; font-size: 13.5px; color: var(--text-dim); }
+  .callout {
+    margin-top: 16px; border-left: 3px solid var(--accent-2);
+    background: var(--accent-soft); border-radius: 0 10px 10px 0; padding: 12px 16px; font-size: 14.5px;
+  }
+  .callout.warn { border-left-color: var(--warn-border); background: var(--warn-bg); color: var(--warn-text); }
+
+  /* ---- steps ---- */
+  ol.steps { counter-reset: s; list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 12px; }
+  ol.steps > li {
+    counter-increment: s; position: relative; padding: 16px 16px 16px 58px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  }
+  ol.steps > li::before {
+    content: counter(s); position: absolute; left: 14px; top: 14px;
+    width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; font-weight: 700;
+  }
+  ol.steps > li b { display:block; margin-bottom: 4px; }
+  ol.steps a { font-weight: 600; }
+
+  /* ---- checklist ---- */
+  .checklist { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 8px; }
+  .checklist li {
+    display: flex; gap: 12px; align-items: flex-start;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px;
+  }
+  .checklist input { margin-top: 4px; width: 18px; height: 18px; accent-color: var(--accent); flex: none; cursor: pointer; }
+  .checklist label { cursor: pointer; }
+  .checklist .hint { color: var(--text-dim); font-size: 13.5px; display: block; }
+
+  /* ---- code ---- */
+  .code {
+    position: relative; background: var(--code-bg); color: var(--code-text);
+    border-radius: 12px; padding: 14px 16px; overflow-x: auto; font-size: 13.5px; line-height: 1.55;
+    border: 1px solid rgba(255,255,255,.06);
+  }
+  .code pre { margin: 0; white-space: pre; }
+  .copy {
+    position: absolute; top: 8px; right: 8px; font-size: 12px; cursor: pointer;
+    background: rgba(255,255,255,.1); color: #fff; border: 1px solid rgba(255,255,255,.18);
+    border-radius: 7px; padding: 4px 9px;
+  }
+  .copy:hover { background: rgba(255,255,255,.2); }
+  .cmt { color: #8b93a7; }
+
+  /* ---- tables ---- */
+  .tablewrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; min-width: 560px; }
+  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { background: var(--surface-2); font-weight: 600; }
+  tr:last-child td { border-bottom: none; }
+  td code, td b code { background: var(--surface-2); padding: 1px 6px; border-radius: 5px; }
+  /* two-line cell: a bold headline, then a description on its own line */
+  .pw { display: block; margin-bottom: 4px; }
+  .pd { display: block; color: var(--text-dim); font-size: 13.5px; }
+
+  /* ---- details / anatomy ---- */
+  details.acc {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 0; margin-top: 12px; overflow: hidden;
+  }
+  details.acc > summary {
+    cursor: pointer; padding: 14px 16px; font-weight: 600; list-style: none;
+    display: flex; align-items: center; gap: 10px;
+  }
+  details.acc > summary::-webkit-details-marker { display: none; }
+  details.acc > summary::before { content: "▸"; color: var(--accent-2); transition: transform .15s; }
+  details.acc[open] > summary::before { transform: rotate(90deg); }
+  details.acc .body { padding: 0 16px 16px; }
+
+  /* ---- resource links ---- */
+  .reslist { display: grid; gap: 10px; margin-top: 8px; }
+  .res {
+    display: block; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 11px; padding: 12px 14px; transition: border-color .12s, transform .12s;
+  }
+  .res:hover { text-decoration: none; border-color: var(--accent); transform: translateY(-1px); }
+  .res .t { font-weight: 650; color: var(--text); }
+  .res .u { font-size: 12.5px; color: var(--accent); word-break: break-all; }
+  .res .d { font-size: 13.5px; color: var(--text-dim); margin-top: 2px; }
+  .res .star { color: var(--accent-2); font-weight: 700; }
+
+  .subhead { margin: 22px 0 4px; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--text-dim); font-weight: 700; }
+
+  footer { max-width: var(--maxw); margin: 0 auto; padding: 28px 20px 60px; color: var(--text-dim); font-size: 13.5px; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><span class="logo">✦</span> SPFx × Copilot</div>
+    <nav class="nav" aria-label="Section navigation">
+      <a href="#big-picture">Big picture</a>
+      <a href="#path">Start here</a>
+      <a href="#prereqs">Setup</a>
+      <a href="#scaffold">Scaffold</a>
+      <a href="#anatomy">Anatomy</a>
+      <a href="#deploy">Build &amp; deploy</a>
+      <a href="#resources">Resources</a>
+      <a href="#practices">Best practices</a>
+      <a href="vol2-site-snapshot.html" style="color:var(--accent);font-weight:600">Build Vol 2 &rarr;</a>
+    </nav>
+    <button class="theme-btn" id="themeBtn" title="Toggle theme" aria-label="Toggle light/dark theme">◐</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <div class="hero">
+    <span class="badge"><span class="dot"></span> SPFx 1.24 Public Preview</span>
+    <h1>Build <span class="grad">Microsoft 365 Copilot agents</span><br/>with SharePoint Framework &amp; React</h1>
+    <p>Your personal hub for learning <b>SharePoint Copilot Apps</b> - SPFx UI components that render <i>inside</i> Copilot, packaged with a declarative agent, that can expand to <b>open a full app</b>. Curated links, a guided path, and a file-by-file explanation of everything the scaffolder builds.</p>
+    <div class="hero-meta">
+      <span class="chip"><b>Node</b> 22</span>
+      <span class="chip"><b>React</b> 18</span>
+      <span class="chip"><b>TypeScript</b> 5.x</span>
+      <span class="chip"><b>Fluent UI</b> v8</span>
+      <span class="chip"><b>Build</b> Heft (not gulp)</span>
+      <span class="chip"><b>Generator</b> @next</span>
+    </div>
+  </div>
+
+  <!-- BIG PICTURE -->
+  <section id="big-picture">
+    <h2><span class="num">01</span> The big picture</h2>
+    <p class="lead">Four things sound like "an agent" but aren't the same. Get them straight and the rest is easy.</p>
+
+    <div class="card">
+      <p style="font-size:16px;color:var(--text)"><b>One sentence:</b> A <b>SharePoint Copilot App</b> is an <b>SPFx solution</b> that bundles one or more <b>Copilot Components</b> (your React UI rendered <i>inside</i> Microsoft&nbsp;365 Copilot) together with a <b>declarative agent</b> definition (manifest + instructions that make Copilot discover, describe, and call them).</p>
+    </div>
+
+    <div class="flow">
+      <div class="node"><div class="k">Host</div><h4>M365 Copilot</h4><p>The chat surface (canvas) your agent appears in.</p></div>
+      <div class="node"><div class="k">Config</div><h4>Declarative agent</h4><p>Manifest + instructions + knowledge + actions. JSON &amp; text, no model code.</p></div>
+      <div class="node"><div class="k">Your code</div><h4>Copilot Component</h4><p>React UI in the canvas. Extends <code>BaseCopilotComponent</code>.</p></div>
+      <div class="node"><div class="k">Capability</div><h4>Tool → Action</h4><p>Each component tool (Zod-typed) surfaces to the agent as a callable action.</p></div>
+    </div>
+
+    <h3 style="margin-top:34px">When is SPFx the right way to build a Copilot agent?</h3>
+    <p class="lead" style="margin-top:2px">There are five ways to extend Copilot. SPFx is one lane - powerful, but not always the answer. Pick the lightest tool that does the job.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Option</th><th>Code level</th><th>Custom UI in Copilot?</th><th>Best when…</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><b>SharePoint Copilot App (SPFx)</b> <span style="color:var(--accent-2)">← this hub</span></td>
+            <td>Pro-code (React/TS)</td>
+            <td><b>Yes</b> - inline + fullscreen</td>
+            <td>You need <b>interactive UI inside Copilot</b> (dashboards, wizards, forms) or a <b>full-screen app</b>, tight SharePoint/Graph integration, and you already do SPFx. Auto-hosted in your tenant.</td>
+          </tr>
+          <tr>
+            <td>Agent Builder (in Copilot)</td>
+            <td>No-code</td>
+            <td>No</td>
+            <td>You want a quick declarative agent <b>grounded on your files/sites</b> with instructions + starters. Fastest path; no UI.</td>
+          </tr>
+          <tr>
+            <td>Copilot Studio</td>
+            <td>Low-code</td>
+            <td>No (chat + connectors)</td>
+            <td>Citizen devs; conversational flows over many connectors; topics/triggers without writing code.</td>
+          </tr>
+          <tr>
+            <td>Declarative agent via Agents Toolkit / TypeSpec</td>
+            <td>Pro-code</td>
+            <td>No custom in-canvas UI</td>
+            <td>You want pro-code instructions + knowledge + <b>API actions</b>, versioned in source control, but <b>no bespoke UI</b>. VS Code workflow.</td>
+          </tr>
+          <tr>
+            <td>Custom engine agent</td>
+            <td>Pro-code (heavy)</td>
+            <td>Your own surface</td>
+            <td>You need to <b>bring your own model / orchestration</b> and control the full LLM loop. Most effort.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout" style="margin-top:14px">
+      <b>Rule of thumb:</b> <b>Choose SPFx</b> when the value is in <i>rich, interactive UI rendered inside Copilot</i> (or a full-screen app) plus real SharePoint/Graph actions, and your team is a pro-dev SPFx shop. <b>Don't</b> reach for SPFx when the job is pure Q&amp;A over documents (Agent Builder), a citizen-dev conversational flow (Copilot Studio), an API-action agent with no UI (Agents Toolkit), or you need your own LLM (custom engine). If there's no custom UI requirement, a lighter option ships faster.
+    </div>
+  </section>
+
+  <!-- START HERE PATH -->
+  <section id="path">
+    <h2><span class="num">02</span> Start-here guided path</h2>
+    <p class="lead">Do these five, in order. Then you'll have shipped an agent and can branch into your own.</p>
+    <ol class="steps">
+      <li><b>Understand the concept</b> Read <a href="https://learn.microsoft.com/en-us/sharepoint/dev/spfx/copilot/overview-copilot-apps" target="_blank" rel="noopener">Overview of SharePoint Copilot Apps</a> - how components + a declarative agent form one solution.</li>
+      <li><b>Set up your machine &amp; tenant</b> Follow <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/01-prerequisites.md" target="_blank" rel="noopener">docs/01-prerequisites</a> (Node 22, <code>@next</code> generator, dev cert, tenant, Copilot Workbench).</li>
+      <li><b>Build your first agent</b> Do the official <a href="https://learn.microsoft.com/en-us/sharepoint/dev/spfx/copilot/get-started/build-your-first-copilot-app" target="_blank" rel="noopener">Build your first SharePoint Copilot App</a> tutorial end-to-end, mirroring <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/02-scaffold-first-agent.md" target="_blank" rel="noopener">docs/02</a>.</li>
+      <li><b>Learn the manifest</b> Skim the <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/declarative-agent-manifest-1.8" target="_blank" rel="noopener">Declarative agent schema 1.8</a> so you can shape instructions, starters, and actions deliberately.</li>
+      <li><b>Study real React samples</b> Browse the <a href="https://github.com/pnp/spfx-copilot-apps" target="_blank" rel="noopener">pnp/spfx-copilot-apps</a> repo and the React Copilot samples in <a href="https://github.com/pnp/sp-dev-fx-webparts" target="_blank" rel="noopener">sp-dev-fx-webparts</a> - reuse, don't reinvent.</li>
+    </ol>
+  </section>
+
+  <!-- PREREQS -->
+  <section id="prereqs">
+    <h2><span class="num">03</span> Prerequisites checklist</h2>
+    <p class="lead">Tick these off (saved in your browser). Full detail in <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/01-prerequisites.md" target="_blank" rel="noopener">docs/01-prerequisites</a>.</p>
+    <ul class="checklist" id="prereqCheck">
+      <li><input type="checkbox" id="p1"><label for="p1"><b>Node.js 22</b> active <span class="hint"><code>nvm use 22</code> → <code>node -v</code> shows v22.x. Not 18/20.</span></label></li>
+      <li><input type="checkbox" id="p2"><label for="p2"><b>Preview generator</b> installed <span class="hint"><code>npm i @microsoft/generator-sharepoint@next -g</code> - must resolve to 1.24 beta 2+.</span></label></li>
+      <li><input type="checkbox" id="p3"><label for="p3"><b>Yeoman</b> installed <span class="hint"><code>npm i yo -g</code></span></label></li>
+      <li><input type="checkbox" id="p4"><label for="p4"><b>Dev certificate</b> trusted <span class="hint">Serves from <code>https://localhost:4321</code>. Use the trust command the scaffold prints.</span></label></li>
+      <li><input type="checkbox" id="p5"><label for="p5"><b>Tenant with app catalog</b> <span class="hint">You can upload/deploy a <code>.sppkg</code>. A M365 Developer tenant is ideal.</span></label></li>
+      <li><input type="checkbox" id="p6"><label for="p6"><b>M365 Copilot available</b> <span class="hint">So the agent actually surfaces. No Copilot license required <i>during preview</i>.</span></label></li>
+      <li><input type="checkbox" id="p7"><label for="p7"><b>Copilot Workbench</b> reachable <span class="hint"><code>/_layouts/15/copilotworkbench.aspx</code> on your tenant.</span></label></li>
+    </ul>
+  </section>
+
+  <!-- SCAFFOLD -->
+  <section id="scaffold">
+    <h2><span class="num">04</span> Scaffold your first agent</h2>
+    <p class="lead">You run this yourself - it's how you learn the real, always-current flow.</p>
+
+    <div class="code">
+      <button class="copy">Copy</button>
+      <pre><span class="cmt"># Step 1: make a new folder inside the workspace</span>
+nvm use 22
+cd &lt;your-workspace&gt;\agents
+mkdir my-first-copilot-app
+cd my-first-copilot-app
+
+<span class="cmt"># Step 2: run the generator</span>
+yo @microsoft/sharepoint</pre>
+    </div>
+
+    <p class="subhead">Answer the prompts</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Prompt</th><th>Answer</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>Solution name?</td><td><code>my-first-copilot-app</code></td><td>Names the <code>.sppkg</code> + solution folder.</td></tr>
+          <tr><td>Which type of client-side component?</td><td><b><code>Copilot Component</code></b></td><td>The new agent component type. (Web Part / Extension / ACE still listed - ignore.)</td></tr>
+          <tr><td>Copilot component name?</td><td><code>HelloAgent</code></td><td>Becomes the class + manifest name. PascalCase, meaningful.</td></tr>
+          <tr><td>Which template?</td><td><b>React</b></td><td>Options: Minimal / No framework / <b>React</b> (React 18 in 1.24 templates).</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="code" style="margin-top:14px">
+      <button class="copy">Copy</button>
+      <pre><span class="cmt"># Step 3: pin React to an exact version (preview installs can drift, which causes React #300)</span>
+npm install react@18 react-dom@18 --save-exact
+
+<span class="cmt"># Step 4: open the project, then read docs/03-project-anatomy.md alongside it</span>
+code .</pre>
+    </div>
+    <div class="callout">Compare your generated files against the annotated <a href="https://github.com/tvahk/spfx-copilot-learning-hub/tree/main/reference/" target="_blank" rel="noopener">reference/</a> study code - same pieces, explained line by line.</div>
+
+    <div class="card" style="margin-top:18px; border-left:3px solid var(--accent-2)">
+      <h3 style="display:flex;align-items:center;gap:8px">🏥 What to build first - <span style="color:var(--accent-2)">Site Snapshot</span></h3>
+      <p style="margin:6px 0 10px">A SharePoint governance co-pilot that gives an on-demand <b>health snapshot</b> of a site - storage pressure, stale docs, external sharing, largest files - as an opinionated <b>score</b> inside Copilot, and can <b>export or email</b> it. Useful on day one, teaches every core mechanic (tools, Zod, real Graph reads, a real send-mail action, inline + fullscreen), and it <i>computes</i> rather than just displays - so it's not a community clone.</p>
+      <p style="margin:0 0 6px">Follow the step-by-step build-along: <a href="vol2-site-snapshot.html"><b>Vol 2 - Build Site Snapshot</b></a>. It walks the full solution (Fluent UI, PnPjs, PnP controls) milestone by milestone.</p>
+      <p style="margin:0 0 6px">The spec behind it is <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/scenario-01-site-snapshot.md" target="_blank" rel="noopener">docs/scenario-01-site-snapshot.md</a>.</p>
+      <p style="margin:0">The finished skeleton lives in <a href="https://github.com/tvahk/spfx-copilot-learning-hub/tree/main/reference/scenario-site-snapshot/" target="_blank" rel="noopener">reference/scenario-site-snapshot/</a>, where the health-score model works as-is.</p>
+    </div>
+  </section>
+
+  <!-- ANATOMY -->
+  <section id="anatomy">
+    <h2><span class="num">05</span> Project anatomy - what got built &amp; why</h2>
+    <p class="lead">A Copilot App is made of three zones. Expand each one to see the files it contains and what each file is for. The full write-up is in <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/03-project-anatomy.md" target="_blank" rel="noopener">docs/03</a>, and every JSON property of the agent files is listed in <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/06-declarative-agent-schema.md" target="_blank" rel="noopener">docs/06</a>.</p>
+
+    <details class="acc" open>
+      <summary>Zone 1 - <code>src/copilotComponents/helloAgent/</code> (your code)</summary>
+      <div class="body">
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>File</th><th>What it is</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><code>HelloAgentCopilotComponent.ts(x)</code></td>
+                <td>
+                  <b class="pw">The component class. It is the entry point Copilot loads.</b>
+                  <span class="pd">It extends <code>BaseCopilotComponent</code>. Its only jobs are to read the host context (such as the current display mode and theme), mount your React UI, and switch between the inline and fullscreen layouts. Keep this file small and put the real UI in <code>components/</code>.</span>
+                </td>
+              </tr>
+              <tr>
+                <td><code>...CopilotComponent.manifest.json</code></td>
+                <td>
+                  <b class="pw">The component manifest. It is the contract Copilot reads.</b>
+                  <span class="pd">It declares the component <code>id</code>, its type (<code>CopilotComponent</code>, <code>Ux</code>), the display modes it supports, and the list of <code>tools</code>. This is what makes your component discoverable and callable from an agent.</span>
+                </td>
+              </tr>
+              <tr>
+                <td><code>...ComponentProperties.ts</code></td>
+                <td>
+                  <b class="pw">The tool's parameter schema, written with <b>Zod</b>.</b>
+                  <span class="pd">It checks the arguments the model sends to a tool, and it tells the model exactly what shape those arguments should take.</span>
+                </td>
+              </tr>
+              <tr>
+                <td><code>components/</code></td>
+                <td>
+                  <b class="pw">Your actual React UI.</b>
+                  <span class="pd">This is where you spend most of your time. Both the small inline card and the full-screen app live here.</span>
+                </td>
+              </tr>
+              <tr>
+                <td><code>loc/</code></td>
+                <td>
+                  <b class="pw">Localized strings.</b>
+                  <span class="pd">The standard SPFx pattern for translatable text, using a strings file plus a matching type definition.</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary>Zone 2 - <code>copilot/</code> (the declarative agent)</summary>
+      <div class="body">
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>File</th><th>What it is</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><code>manifest.json</code></td>
+                <td>
+                  <b class="pw">The Microsoft 365 app manifest.</b>
+                  <span class="pd">It gives the package its identity in the tenant (name, icons, and IDs) and points Copilot at the declarative agent definition.</span>
+                </td>
+              </tr>
+              <tr>
+                <td><code>declarativeAgent.json</code></td>
+                <td>
+                  <b class="pw">The declarative agent definition. Think of it as the agent's brain.</b>
+                  <span class="pd">It holds the agent's name, description, instructions, conversation starters, knowledge sources, and the actions it is allowed to call.</span>
+                </td>
+              </tr>
+              <tr>
+                <td><code>ai-plugin.json</code></td>
+                <td>
+                  <b class="pw">The plugin definition.</b>
+                  <span class="pd">It describes your component's tools to the model as callable actions. It is the bridge between the agent and your tool.</span>
+                </td>
+              </tr>
+              <tr>
+                <td><code>instruction.txt</code></td>
+                <td>
+                  <b class="pw">The agent's behaviour, written in plain language.</b>
+                  <span class="pd">It sets the persona and the guardrails. Editing this file is the fastest way to change how the agent responds, with no code change needed.</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary>Zone 3 - <code>config/</code> and the root (build and packaging)</summary>
+      <div class="body">
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>File</th><th>What it is</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><code>config/copilot-agent.json</code></td>
+                <td>
+                  <b class="pw">Links your components into the agent.</b>
+                  <span class="pd">It groups one or more components by their <code>id</code>. At build time it is merged with <code>declarativeAgent.json</code> to produce the final agent.</span>
+                </td>
+              </tr>
+              <tr>
+                <td><code>config/package-solution.json</code></td>
+                <td>
+                  <b class="pw">The packaging settings.</b>
+                  <span class="pd">It holds the solution id and version. Bump the version on every deploy. It also enables in-tenant hosting of your bundled files.</span>
+                </td>
+              </tr>
+              <tr>
+                <td><code>package.json</code></td>
+                <td>
+                  <b class="pw">Dependencies and build scripts.</b>
+                  <span class="pd">The scripts use Heft. Gulp is no longer used from SPFx 1.22 onward.</span>
+                </td>
+              </tr>
+              <tr>
+                <td><code>.yo-rc.json</code></td>
+                <td>
+                  <b class="pw">A record of your generator answers.</b>
+                  <span class="pd">It stores the SPFx version and component type you chose. Do not edit it by hand.</span>
+                </td>
+              </tr>
+              <tr>
+                <td><code>lib/ dist/ temp/ sharepoint/</code></td>
+                <td>
+                  <b class="pw">Generated build output.</b>
+                  <span class="pd"><code>temp/copilot/</code> holds the merged agent, and <code>sharepoint/solution/*.sppkg</code> is the package you deploy.</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary>How a request actually flows</summary>
+      <div class="body">
+        <div class="code"><pre>User types in Copilot
+   → declarative agent (declarativeAgent.json + instruction.txt) decides to act
+   → invokes an ACTION (ai-plugin.json)
+   → mapped to a TOOL on your component (component manifest tools[])
+   → your component render()s UI in the Copilot canvas
+   → inline by default; requestDisplayModeAsync('fullscreen') to "open the full app"</pre></div>
+      </div>
+    </details>
+  </section>
+
+  <!-- DEPLOY -->
+  <section id="deploy">
+    <h2><span class="num">06</span> Build, run &amp; deploy cheat-sheet</h2>
+    <p class="lead">Heft toolchain (no gulp). Full detail: <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/04-build-run-deploy.md" target="_blank" rel="noopener">docs/04</a>.</p>
+
+    <div class="grid cols-3">
+      <div class="card">
+        <h3>① Test locally</h3>
+        <p>Run <code>npm install</code> once first. In the Copilot Workbench - seconds per iteration.</p>
+        <div class="code" style="margin-top:10px"><button class="copy">Copy</button><pre>npx heft start --nobrowser</pre></div>
+        <p style="margin-top:8px">Open <code>/_layouts/15/copilotworkbench.aspx</code> → accept debug manifests → activate → <b>Fire turn</b>.</p>
+      </div>
+      <div class="card">
+        <h3>② Package</h3>
+        <p>Bump <code>solution.version</code> first, then:</p>
+        <div class="code" style="margin-top:10px"><button class="copy">Copy</button><pre>npx heft clean
+npx heft build --production
+npx heft package-solution --production</pre></div>
+        <p style="margin-top:8px">Output: <code>sharepoint/solution/*.sppkg</code></p>
+      </div>
+      <div class="card">
+        <h3>③ Deploy → Copilot</h3>
+        <p>App Catalog → upload <code>.sppkg</code> → approve any Graph perms → <b>Add to Teams</b> (auto-syncs the agent) → appears in M365 Copilot.</p>
+      </div>
+    </div>
+
+    <div class="callout warn"><b>Always bump the version.</b> SharePoint distinguishes packages by <code>solution.version</code> in <code>package-solution.json</code>. Skip the bump and the tenant may serve stale code.</div>
+  </section>
+
+  <!-- RESOURCES -->
+  <section id="resources">
+    <h2><span class="num">07</span> Curated resource library</h2>
+    <p class="lead">The <span class="star">★</span> marks the best places to start.</p>
+
+    <div class="subhead">Deeper reference in this repo</div>
+    <div class="reslist">
+      <a class="res" href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/06-declarative-agent-schema.md" target="_blank" rel="noopener"><div class="t">Declarative agent JSON reference</div><div class="u">docs/06-declarative-agent-schema.md</div><div class="d">Every property of the declarative agent manifest (v1.8) and the API plugin manifest (v2.4), including the full capabilities list.</div></a>
+      <a class="res" href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/07-skills-and-tooling.md" target="_blank" rel="noopener"><div class="t">Skills, and the tooling around agents</div><div class="u">docs/07-skills-and-tooling.md</div><div class="d">What "skills" really means (three different things), how to build each, knowledge sources, and the helper tools worth having.</div></a>
+    </div>
+
+    <div class="subhead">Official - Microsoft Learn (SPFx &amp; Copilot Apps)</div>
+    <div class="reslist">
+      <a class="res" href="https://learn.microsoft.com/en-us/sharepoint/dev/spfx/copilot/overview-copilot-apps" target="_blank" rel="noopener"><div class="t"><span class="star">★</span> Overview of SharePoint Copilot Apps</div><div class="u">learn.microsoft.com/…/spfx/copilot/overview-copilot-apps</div><div class="d">The core concept: Copilot Components + declarative agent in one SPFx solution.</div></a>
+      <a class="res" href="https://learn.microsoft.com/en-us/sharepoint/dev/spfx/copilot/get-started/build-your-first-copilot-app" target="_blank" rel="noopener"><div class="t"><span class="star">★</span> Build your first SharePoint Copilot App</div><div class="u">learn.microsoft.com/…/copilot/get-started/build-your-first-copilot-app</div><div class="d">End-to-end tutorial: scaffold → Copilot Workbench → deploy → use in Copilot.</div></a>
+      <a class="res" href="https://learn.microsoft.com/en-us/sharepoint/dev/spfx/release-1.24.0" target="_blank" rel="noopener"><div class="t">SPFx v1.24 preview release notes</div><div class="u">learn.microsoft.com/…/spfx/release-1.24.0</div><div class="d">Latest preview: Copilot Components, manifest v1.8, React 18.</div></a>
+      <a class="res" href="https://learn.microsoft.com/en-us/sharepoint/dev/spfx/sharepoint-framework-overview" target="_blank" rel="noopener"><div class="t">Overview of the SharePoint Framework</div><div class="u">learn.microsoft.com/…/spfx/sharepoint-framework-overview</div><div class="d">What SPFx is and its client-side model.</div></a>
+      <a class="res" href="https://learn.microsoft.com/en-us/sharepoint/dev/spfx/set-up-your-development-environment" target="_blank" rel="noopener"><div class="t">Set up your SPFx dev environment</div><div class="u">learn.microsoft.com/…/spfx/set-up-your-development-environment</div><div class="d">Node/Yeoman toolchain and trusting the dev cert.</div></a>
+      <a class="res" href="https://learn.microsoft.com/en-us/sharepoint/dev/spfx/compatibility" target="_blank" rel="noopener"><div class="t">SPFx compatibility matrix</div><div class="u">learn.microsoft.com/…/spfx/compatibility</div><div class="d">Exact Node / TypeScript / React versions per SPFx release.</div></a>
+    </div>
+
+    <div class="subhead">Official - Copilot extensibility &amp; declarative agents</div>
+    <div class="reslist">
+      <a class="res" href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/" target="_blank" rel="noopener"><div class="t">Extend Microsoft 365 Copilot (hub)</div><div class="u">learn.microsoft.com/…/copilot/extensibility/</div><div class="d">Landing page for all Copilot extensibility options.</div></a>
+      <a class="res" href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/overview-declarative-agent" target="_blank" rel="noopener"><div class="t">Declarative agents for Microsoft 365 Copilot</div><div class="u">learn.microsoft.com/…/extensibility/overview-declarative-agent</div><div class="d">What a declarative agent is: instructions + knowledge + actions.</div></a>
+      <a class="res" href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/declarative-agent-manifest-1.8" target="_blank" rel="noopener"><div class="t"><span class="star">★</span> Declarative agent schema 1.8 (manifest reference)</div><div class="u">learn.microsoft.com/…/extensibility/declarative-agent-manifest-1.8</div><div class="d">The manifest JSON schema you author.</div></a>
+      <a class="res" href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/declarative-agent-best-practices" target="_blank" rel="noopener"><div class="t">Best practices for declarative agents</div><div class="u">learn.microsoft.com/…/extensibility/declarative-agent-best-practices</div><div class="d">Writing instructions, scoping knowledge, tuning behavior.</div></a>
+      <a class="res" href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/declarative-agent-tool-comparison" target="_blank" rel="noopener"><div class="t">Choose the right tool to build a declarative agent</div><div class="u">learn.microsoft.com/…/extensibility/declarative-agent-tool-comparison</div><div class="d">Agents Toolkit vs Agent Builder vs SPFx - which lane you're in.</div></a>
+    </div>
+
+    <div class="subhead">GitHub - sample repositories</div>
+    <div class="reslist">
+      <a class="res" href="https://github.com/pnp/spfx-copilot-apps" target="_blank" rel="noopener"><div class="t"><span class="star">★</span> pnp/spfx-copilot-apps</div><div class="u">github.com/pnp/spfx-copilot-apps</div><div class="d">The official SharePoint Copilot Apps samples (also via aka.ms/SPFx/Copilot/GitHub).</div></a>
+      <a class="res" href="https://github.com/pnp/sp-dev-fx-webparts" target="_blank" rel="noopener"><div class="t"><span class="star">★</span> pnp/sp-dev-fx-webparts</div><div class="u">github.com/pnp/sp-dev-fx-webparts</div><div class="d">Huge community repo - mostly React. See <code>react-copilot-apis-explorer</code> &amp; <code>react-copilot-retrieval-api</code>.</div></a>
+      <a class="res" href="https://github.com/pnp/copilot-pro-dev-samples" target="_blank" rel="noopener"><div class="t">pnp/copilot-pro-dev-samples</div><div class="u">github.com/pnp/copilot-pro-dev-samples</div><div class="d">Pro-code samples for M365 Copilot (declarative / custom-engine agents).</div></a>
+      <a class="res" href="https://github.com/pnp/sp-dev-fx-extensions" target="_blank" rel="noopener"><div class="t">pnp/sp-dev-fx-extensions</div><div class="u">github.com/pnp/sp-dev-fx-extensions</div><div class="d">Community SPFx extension samples (React).</div></a>
+      <a class="res" href="https://github.com/MicrosoftDocs/m365copilot-docs" target="_blank" rel="noopener"><div class="t">MicrosoftDocs/m365copilot-docs</div><div class="u">github.com/MicrosoftDocs/m365copilot-docs</div><div class="d">Source behind the Copilot extensibility docs.</div></a>
+      <a class="res" href="https://github.com/SharePoint/sp-dev-docs" target="_blank" rel="noopener"><div class="t">SharePoint/sp-dev-docs</div><div class="u">github.com/SharePoint/sp-dev-docs</div><div class="d">Source behind the SPFx docs - file issues, track changes.</div></a>
+    </div>
+
+    <div class="subhead">PnP - Microsoft 365 &amp; Power Platform Community</div>
+    <div class="reslist">
+      <a class="res" href="https://pnp.github.io/docs/" target="_blank" rel="noopener"><div class="t">PnP documentation hub</div><div class="u">pnp.github.io/docs/</div><div class="d">Entry point for PnP tools, guidance, community.</div></a>
+      <a class="res" href="https://pnp.github.io/sp-dev-fx-webparts/" target="_blank" rel="noopener"><div class="t">SPFx Web Parts sample gallery</div><div class="u">pnp.github.io/sp-dev-fx-webparts/</div><div class="d">Browsable index of the samples repo.</div></a>
+      <a class="res" href="https://learn.microsoft.com/en-us/sharepoint/dev/community/community" target="_blank" rel="noopener"><div class="t">SharePoint Developer Community (PnP)</div><div class="u">learn.microsoft.com/…/sharepoint/dev/community/community</div><div class="d">Community-call schedule (incl. YouTube), contribution model, channels.</div></a>
+      <a class="res" href="https://pnp.github.io/blog/" target="_blank" rel="noopener"><div class="t">PnP Weekly / community blog</div><div class="u">pnp.github.io/blog/</div><div class="d">Weekly agendas, community-call topics, demos.</div></a>
+    </div>
+
+    <div class="subhead">Official blogs &amp; announcements</div>
+    <div class="reslist">
+      <a class="res" href="https://devblogs.microsoft.com/microsoft365dev/going-beyond-text-in-microsoft-365-copilot-introducing-sharepoint-copilot-apps/" target="_blank" rel="noopener"><div class="t"><span class="star">★</span> Introducing SharePoint Copilot Apps</div><div class="u">devblogs.microsoft.com/microsoft365dev/…introducing-sharepoint-copilot-apps</div><div class="d">The launch announcement for Copilot Apps / Components.</div></a>
+      <a class="res" href="https://devblogs.microsoft.com/microsoft365dev/sharepoint-framework-spfx-roadmap-update-august-2026/" target="_blank" rel="noopener"><div class="t">SPFx roadmap update - August 2026</div><div class="u">devblogs.microsoft.com/microsoft365dev/…roadmap-update-august-2026</div><div class="d">Copilot Components + React 18, preview status, GA timeline.</div></a>
+    </div>
+
+    <div class="subhead">Tooling</div>
+    <div class="reslist">
+      <a class="res" href="https://learn.microsoft.com/en-us/sharepoint/dev/spfx/yeoman-generator-for-spfx-intro" target="_blank" rel="noopener"><div class="t">Yeoman generator for SPFx</div><div class="u">learn.microsoft.com/…/spfx/yeoman-generator-for-spfx-intro</div><div class="d">The <code>yo @microsoft/sharepoint</code> scaffolder.</div></a>
+      <a class="res" href="https://learn.microsoft.com/en-us/microsoftteams/platform/toolkit/overview-agents-toolkit" target="_blank" rel="noopener"><div class="t">Microsoft 365 Agents Toolkit</div><div class="u">learn.microsoft.com/…/toolkit/overview-agents-toolkit</div><div class="d">Evolution of Teams Toolkit; pro-code agent build/debug/validate.</div></a>
+      <a class="res" href="https://learn.microsoft.com/en-us/sharepoint/dev/embedded/overview" target="_blank" rel="noopener"><div class="t">SharePoint Embedded overview</div><div class="u">learn.microsoft.com/…/sharepoint/dev/embedded/overview</div><div class="d">API-only document storage - relevant to some "full app" scenarios.</div></a>
+    </div>
+
+    <div class="subhead">Community tutorials</div>
+    <div class="reslist">
+      <a class="res" href="https://iamguidozam.blog/2026/07/29/create-your-first-sharepoint-copilot-app/" target="_blank" rel="noopener"><div class="t">Create your first SharePoint Copilot app - GuidoZam</div><div class="u">iamguidozam.blog/2026/07/29/create-your-first-sharepoint-copilot-app</div><div class="d">Step-by-step first-build walkthrough.</div></a>
+      <a class="res" href="https://iamguidozam.blog/2026/06/24/pro-code-declarative-agent-with-sharepoint-knowledge-base/" target="_blank" rel="noopener"><div class="t">Pro-code declarative agent with a SharePoint KB - GuidoZam</div><div class="u">iamguidozam.blog/2026/06/24/pro-code-declarative-agent-with-sharepoint-knowledge-base</div><div class="d">Grounding a declarative agent on SharePoint content.</div></a>
+      <a class="res" href="https://www.dev-sky.blog/2026/07/your-ui-inside-chat-building-custom.html" target="_blank" rel="noopener"><div class="t">Your UI, inside the chat - dev-sky</div><div class="u">dev-sky.blog/2026/07/your-ui-inside-chat-building-custom.html</div><div class="d">Deep dive on rendering SPFx UI inside Copilot chat.</div></a>
+      <a class="res" href="https://practical365.com/copilot-declarative-agent/" target="_blank" rel="noopener"><div class="t">Creating a declarative agent - Practical365</div><div class="u">practical365.com/copilot-declarative-agent/</div><div class="d">Practitioner walkthrough of a declarative agent.</div></a>
+    </div>
+  </section>
+
+  <!-- BEST PRACTICES -->
+  <section id="practices">
+    <h2><span class="num">08</span> Best practices &amp; gotchas</h2>
+    <p class="lead">The short version. Full list: <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/05-best-practices.md" target="_blank" rel="noopener">docs/05</a>.</p>
+    <div class="grid cols-2">
+      <div class="card"><h3>Pin your versions</h3><p>Use Node 22, React 18 (installed with <code>--save-exact</code>), TypeScript 5.x, and Fluent UI v8. Do not use Fluent UI v9. Version drift is the most common cause of the React #300 error.</p></div>
+      <div class="card"><h3>Use Heft, not gulp</h3><p>The build tool changed in SPFx 1.22. Run <code>npx heft start</code>, <code>npx heft build</code>, and <code>npx heft package-solution</code> instead of the old gulp commands. Heft is a local dependency, so prefix with <code>npx</code> (or use <code>npm start</code>).</p></div>
+      <div class="card"><h3>Design both display modes</h3><p>Make the inline view compact with a single clear action, and make the fullscreen view the full app. You request fullscreen, and you handle the host collapsing you back in <code>onHostContextChanged()</code>.</p></div>
+      <div class="card"><h3>Keep the component class thin</h3><p>The class should only read host context, mount React, and wire up the display modes. Keep all of your real UI in the <code>components/</code> folder.</p></div>
+      <div class="card"><h3>Put behavior in text</h3><p>Change <code>instruction.txt</code> before you change code. Keep each tool narrow, and keep <code>ai-plugin.json</code> in sync with your component's tools.</p></div>
+      <div class="card"><h3>Practise preview hygiene</h3><p>Build on a sandbox tenant only. Note which generator beta you scaffolded on, and trust your own scaffold over any document when they disagree.</p></div>
+      <div class="card"><h3>Centralize data access</h3><p>Use one PnPjs service and import only the parts you need. Cache your Graph reads, and show friendly error messages rather than raw stack traces in the Copilot UI.</p></div>
+      <div class="card"><h3>CSP-ready</h3><p>Do not use inline scripts or <code>eval</code>. Bundled assets in <code>ClientSideAssets</code> are trusted automatically, so keep all logic in bundled files.</p></div>
+    </div>
+
+    <div class="callout" style="margin-top:20px">
+      <b>Getting help from Claude as you build:</b> tell it to read this repo's <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/CLAUDE.md" target="_blank" rel="noopener"><code>CLAUDE.md</code></a> first - it pins these versions and commands so you don't get regressed to gulp / Node 18 / React 17. Mention which generator beta you're on if behavior diverges from these docs.
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  SPFx Copilot Apps are in preview. Always verify against your own scaffold and the official Microsoft Learn docs, because the APIs can change.
+</footer>
+
+<script>
+  // Theme toggle (persisted). Respects system default until user overrides.
+  (function () {
+    var root = document.documentElement;
+    var saved = localStorage.getItem('spfxhub-theme');
+    if (saved) root.setAttribute('data-theme', saved);
+    document.getElementById('themeBtn').addEventListener('click', function () {
+      var cur = root.getAttribute('data-theme');
+      if (!cur) {
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        cur = prefersDark ? 'dark' : 'light';
+      }
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('spfxhub-theme', next);
+    });
+  })();
+
+  // Persist prerequisite checkboxes.
+  (function () {
+    var boxes = document.querySelectorAll('#prereqCheck input[type=checkbox]');
+    boxes.forEach(function (b) {
+      var key = 'spfxhub-' + b.id;
+      if (localStorage.getItem(key) === '1') b.checked = true;
+      b.addEventListener('change', function () {
+        localStorage.setItem(key, b.checked ? '1' : '0');
+      });
+    });
+  })();
+
+  // Copy buttons for code blocks.
+  (function () {
+    document.querySelectorAll('.copy').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var pre = btn.parentElement.querySelector('pre');
+        var text = pre ? pre.innerText : '';
+        navigator.clipboard.writeText(text).then(function () {
+          var old = btn.textContent;
+          btn.textContent = 'Copied ✓';
+          setTimeout(function () { btn.textContent = old; }, 1400);
+        }).catch(function () {
+          btn.textContent = 'Ctrl+C';
+        });
+      });
+    });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/copilot/declarative-agent/v1.8/schema.json",
+  "version": "v1.8",
+
+  "_studyNote_root": "This is the agent's BRAIN CONFIG. Schema v1.8 ships with SPFx 1.24 beta.3. Every key starting with _studyNote is an annotation for learning ONLY — DELETE them in a real scaffold or manifest validation fails.",
+
+  "name": "Hello Agent",
+  "description": "Greets you by name and can open a small full-screen dashboard inside Copilot.",
+
+  "_studyNote_instructions": "Pulled from instruction.txt so behavior lives in text, not code. Change the agent's persona/guardrails there.",
+  "instructions": "$[file('instruction.txt')]",
+
+  "_studyNote_starters": "Buttons shown to the user when the agent opens. Make them map to real tool calls.",
+  "conversation_starters": [
+    { "title": "Greet me", "text": "Greet me by name" },
+    { "title": "Open dashboard", "text": "Open the full-screen dashboard" }
+  ],
+
+  "_studyNote_capabilities": "Optional built-in Copilot capabilities the agent may use (e.g. web search, code interpreter, graphic art). Omit or trim to least-privilege.",
+  "capabilities": [],
+
+  "_studyNote_actions": "Each action references a plugin file (ai-plugin.json) that exposes your component's TOOLS to the model. No action here = your tools are invisible to the agent.",
+  "actions": [
+    {
+      "id": "helloAgentPlugin",
+      "file": "ai-plugin.json"
+    }
+  ]
+}

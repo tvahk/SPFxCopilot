@@ -1,0 +1,9 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/copilot/plugin/v2.4/schema.json",
+  "schema_version": "v2.4",
+  "namespace": "helloAgent",
+  "name_for_human": "HelloAgent Agent",
+  "description_for_human": "HelloAgent description",
+  "description_for_model": "HelloAgent description",
+  "contact_email": "publisher@contoso.com"
+}

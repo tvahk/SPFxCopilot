@@ -1,0 +1,47 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/copilot/plugin/v2.4/schema.json",
+  "schema_version": "v2.4",
+
+  "_studyNote_root": "Plugin definition for Site Snapshot. Each function name must match a tool in SiteSnapshotCopilotComponent.manifest.json and a Zod schema export. Remove _studyNote_* keys in a real scaffold.",
+
+  "name_for_human": "Site Snapshot",
+  "namespace": "siteSnapshot",
+  "description_for_human": "Analyse a SharePoint site's health, and export or email the result.",
+
+  "functions": [
+    {
+      "name": "analyzeSite",
+      "description": "Analyse a site and show a health snapshot.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "siteUrl": { "type": "string", "description": "Absolute site URL. Omit for the current site." },
+          "staleMonths": { "type": "integer", "description": "Months of inactivity that make a document stale." },
+          "topN": { "type": "integer", "description": "How many largest files to list." }
+        }
+      }
+    },
+    {
+      "name": "exportSnapshot",
+      "description": "Export the current snapshot to CSV.",
+      "parameters": { "type": "object", "properties": {} }
+    },
+    {
+      "name": "emailSnapshot",
+      "description": "Email the current snapshot summary to the user.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "recipient": { "type": "string", "description": "Recipient email. Omit to send to the current user." }
+        }
+      }
+    }
+  ],
+
+  "runtimes": [
+    {
+      "type": "SharePointCopilotApp",
+      "run_for_functions": ["analyzeSite", "exportSnapshot", "emailSnapshot"]
+    }
+  ]
+}

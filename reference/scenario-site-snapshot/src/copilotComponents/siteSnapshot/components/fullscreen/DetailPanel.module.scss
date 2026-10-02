@@ -1,0 +1,16 @@
+// Site Snapshot - detail panel layout.
+// Layout only; the list itself is themed by Fluent.
+
+.listWrap {
+  overflow-x: auto;
+}
+
+.fileCell {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fileName {
+  font-weight: 500;
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/copilot/declarative-agent/v1.8/schema.json",
+  "version": "v1.8",
+
+  "_studyNote_root": "Declarative agent for Site Snapshot (schema v1.8). Remove _studyNote_* keys in a real scaffold. Full property reference: docs/06-declarative-agent-schema.md.",
+
+  "name": "Site Snapshot",
+  "description": "Gives an on-demand health snapshot of a SharePoint site and can export or email it.",
+
+  "instructions": "$[file('instruction.txt')]",
+
+  "conversation_starters": [
+    { "title": "Snapshot this site", "text": "Give me a health snapshot of the current site" },
+    { "title": "External sharing", "text": "Which files here are shared externally?" },
+    { "title": "Stale content", "text": "What documents are stale and should be cleaned up?" }
+  ],
+
+  "capabilities": [
+    { "name": "OneDriveAndSharePoint" }
+  ],
+
+  "actions": [
+    {
+      "id": "siteSnapshotPlugin",
+      "file": "ai-plugin.json"
+    }
+  ]
+}

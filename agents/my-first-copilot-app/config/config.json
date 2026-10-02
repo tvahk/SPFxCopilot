@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "hello-agent-copilot-component": {
+      "components": [
+        {
+          "entrypoint": "./lib/copilotComponents/helloAgent/HelloAgentCopilotComponent.js",
+          "manifest": "./src/copilotComponents/helloAgent/HelloAgentCopilotComponent.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "HelloAgentCopilotComponentStrings": "lib/copilotComponents/helloAgent/loc/{locale}.js"
+  }
+}

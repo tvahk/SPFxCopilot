@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "my-first-copilot-app-client-side-solution",
+    "id": "38300735-d1a1-4fc5-8c73-ee285c585cda",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.24.0-beta.3"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "my-first-copilot-app description"
+      },
+      "longDescription": {
+        "default": "my-first-copilot-app description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "my-first-copilot-app Feature",
+        "description": "The feature that activates elements of the my-first-copilot-app solution.",
+        "id": "3dbe62fa-8c24-4bd4-b38d-6d688538296d",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/my-first-copilot-app.sppkg"
+  }
+}

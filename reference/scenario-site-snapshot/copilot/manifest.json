@@ -1,0 +1,44 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.19/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.19",
+
+  "_studyNote_root": "M365 app manifest for Site Snapshot. It gives the package its tenant identity and points at the declarative agent. Remove _studyNote_* keys in a real scaffold.",
+
+  "id": "00000000-0000-0000-0000-000000000000",
+  "version": "1.0.0",
+  "packageName": "com.contoso.sitesnapshot",
+
+  "developer": {
+    "name": "Your Company",
+    "websiteUrl": "https://contoso.example",
+    "privacyUrl": "https://contoso.example/privacy",
+    "termsOfUseUrl": "https://contoso.example/terms"
+  },
+
+  "name": {
+    "short": "Site Snapshot",
+    "full": "Site Snapshot - SharePoint governance co-pilot"
+  },
+  "description": {
+    "short": "On-demand health snapshot of a SharePoint site.",
+    "full": "Site Snapshot gives an opinionated health score for a SharePoint site (storage, stale docs, external sharing, largest files) inside Microsoft 365 Copilot, and can export or email the result."
+  },
+
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+
+  "accentColor": "#0F6CBD",
+
+  "copilotAgents": {
+    "declarativeAgents": [
+      {
+        "id": "siteSnapshot",
+        "file": "declarativeAgent.json"
+      }
+    ]
+  },
+
+  "validDomains": []
+}

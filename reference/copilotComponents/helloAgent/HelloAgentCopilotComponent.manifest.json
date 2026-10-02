@@ -1,0 +1,31 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/copilot-component-manifest.schema.json",
+
+  "_studyNote_root": "The COMPONENT MANIFEST — the identity + contract of ONE Copilot Component. Remove _studyNote_* keys in a real scaffold. 'id' is a unique GUID; keep it stable across deploys.",
+
+  "id": "11111111-2222-3333-4444-555555555555",
+  "alias": "HelloAgentCopilotComponent",
+
+  "_studyNote_componentType": "componentType 'CopilotComponent' + copilotType 'Ux' = this renders UI inside the Copilot canvas (vs a headless/data component).",
+  "componentType": "CopilotComponent",
+  "copilotType": "Ux",
+
+  "version": "*",
+  "manifestVersion": 2,
+
+  "_studyNote_displayModes": "THE 'OPEN A FULL APP' SWITCH. Declaring 'fullscreen' lets the component expand to the whole Copilot surface. Declare only what you actually support.",
+  "capabilities": {
+    "availableDisplayModes": ["inline", "fullscreen"]
+  },
+
+  "_studyNote_tools": "Each tool is a capability the agent can invoke. 'name' must match a function in ai-plugin.json. 'propertiesSchema' points at the exported Zod schema describing the tool's parameters.",
+  "tools": [
+    {
+      "name": "greet",
+      "description": "Greet the user by name; optionally open full-screen.",
+      "propertiesSchema": "HelloAgentCopilotComponentProperties"
+    }
+  ],
+
+  "preconfiguredEntries": []
+}

@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Vol 2 - Build Site Snapshot</title>
+<style>
+  /* Self-contained, CSP-safe (no external fonts/scripts/images). Theme-aware.
+     Same design system as the Vol 1 hub. */
+  :root {
+    --bg:#f6f7fb; --surface:#fff; --surface-2:#f0f2f8; --text:#1b1f2a; --text-dim:#5a6072;
+    --border:#e2e5ee; --accent:#0f6cbd; --accent-2:#7b5cff; --accent-soft:#e7f0fb;
+    --code-bg:#1e2230; --code-text:#e6e8f0; --ok:#107c10;
+    --warn-bg:#fff4ce; --warn-border:#e6c65c; --warn-text:#6a5300;
+    --radius:14px; --shadow:0 1px 2px rgba(20,24,40,.06), 0 8px 24px rgba(20,24,40,.06); --maxw:1140px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:#0f1220; --surface:#171a2b; --surface-2:#1e2236; --text:#eaecf5; --text-dim:#a2a8bd;
+      --border:#2a2f47; --accent:#4aa3e6; --accent-2:#9d86ff; --accent-soft:#1c2740;
+      --code-bg:#0b0e18; --code-text:#e6e8f0; --warn-bg:#3a2f05; --warn-border:#6d5a12; --warn-text:#f0dc94;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:#0f1220;--surface:#171a2b;--surface-2:#1e2236;--text:#eaecf5;--text-dim:#a2a8bd;
+    --border:#2a2f47;--accent:#4aa3e6;--accent-2:#9d86ff;--accent-soft:#1c2740;
+    --code-bg:#0b0e18;--code-text:#e6e8f0;--warn-bg:#3a2f05;--warn-border:#6d5a12;--warn-text:#f0dc94;
+  }
+  :root[data-theme="light"] {
+    --bg:#f6f7fb;--surface:#fff;--surface-2:#f0f2f8;--text:#1b1f2a;--text-dim:#5a6072;
+    --border:#e2e5ee;--accent:#0f6cbd;--accent-2:#7b5cff;--accent-soft:#e7f0fb;
+    --code-bg:#1e2230;--code-text:#e6e8f0;--warn-bg:#fff4ce;--warn-border:#e6c65c;--warn-text:#6a5300;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+  body { margin:0; background:var(--bg); color:var(--text);
+    font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,system-ui,sans-serif; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code, pre, kbd { font-family:'Cascadia Code','Consolas',ui-monospace,monospace; }
+
+  header.topbar { position: sticky; top: 0; z-index: 20; backdrop-filter: saturate(160%) blur(8px);
+    background: color-mix(in srgb, var(--surface) 86%, transparent); border-bottom: 1px solid var(--border); }
+  .topbar-inner { max-width: var(--maxw); margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; gap: 16px; }
+  .brand { display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:-.2px; }
+  .logo { width:30px; height:30px; border-radius:8px; flex:none; background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:grid; place-items:center; color:#fff; font-size:15px; font-weight:800; }
+  .nav { margin-left:auto; display:flex; gap:4px; flex-wrap:wrap; }
+  .nav a { color:var(--text-dim); padding:6px 10px; border-radius:8px; font-size:14px; }
+  .nav a:hover { background:var(--surface-2); color:var(--text); text-decoration:none; }
+  .nav a.home { color:var(--accent); font-weight:600; }
+  .theme-btn { border:1px solid var(--border); background:var(--surface); color:var(--text); border-radius:8px; padding:6px 10px; cursor:pointer; font-size:14px; }
+  .theme-btn:hover { background:var(--surface-2); }
+
+  main { max-width: var(--maxw); margin: 0 auto; padding: 0 20px 96px; }
+  section { scroll-margin-top: 84px; padding-top: 56px; }
+  h1,h2,h3 { line-height:1.25; letter-spacing:-.3px; }
+  h2 { font-size:26px; margin:0 0 6px; display:flex; align-items:center; gap:10px; }
+  h2 .num { font-size:14px; font-weight:700; color:var(--accent-2); border:1px solid var(--border); border-radius:999px; padding:2px 10px; background:var(--surface); }
+  h3 { font-size:18px; }
+  .lead { color: var(--text-dim); font-size: 16px; margin: 2px 0 20px; }
+
+  .hero { padding: 64px 0 8px; }
+  .badge { display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:600; color:var(--warn-text);
+    background:var(--warn-bg); border:1px solid var(--warn-border); padding:5px 12px; border-radius:999px; }
+  .badge .dot { width:8px; height:8px; border-radius:50%; background:var(--warn-border); }
+  .hero h1 { font-size: clamp(30px, 4vw, 44px); margin: 16px 0 10px; }
+  .hero h1 .grad { background:linear-gradient(135deg,var(--accent),var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .hero p { font-size:18px; color:var(--text-dim); max-width:720px; }
+  .hero-meta { display:flex; flex-wrap:wrap; gap:10px; margin-top:22px; }
+  .chip { font-size:13px; background:var(--surface); border:1px solid var(--border); padding:6px 12px; border-radius:999px; color:var(--text-dim); }
+  .chip b { color: var(--text); }
+
+  .grid { display:grid; gap:16px; }
+  .cols-2 { grid-template-columns: repeat(2,1fr); }
+  .cols-3 { grid-template-columns: repeat(3,1fr); }
+  @media (max-width:820px){ .cols-2,.cols-3 { grid-template-columns:1fr; } }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow); }
+  .card h3 { margin:0 0 6px; font-size:17px; }
+  .card p { margin:0; color:var(--text-dim); font-size:14.5px; }
+
+  .flow { display:flex; flex-wrap:wrap; align-items:stretch; gap:12px; margin-top:8px; }
+  .flow .node { flex:1 1 200px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; }
+  .flow .node .k { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--accent-2); font-weight:700; }
+  .flow .node h4 { margin:6px 0 4px; font-size:15px; }
+  .flow .node p { margin:0; font-size:13.5px; color:var(--text-dim); }
+  .callout { margin-top:16px; border-left:3px solid var(--accent-2); background:var(--accent-soft); border-radius:0 10px 10px 0; padding:12px 16px; font-size:14.5px; }
+  .callout.warn { border-left-color:var(--warn-border); background:var(--warn-bg); color:var(--warn-text); }
+
+  .checklist { list-style:none; padding:0; margin:8px 0 0; display:grid; gap:8px; }
+  .checklist li { display:flex; gap:12px; align-items:flex-start; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:12px 14px; }
+  .checklist input { margin-top:4px; width:18px; height:18px; accent-color:var(--accent); flex:none; cursor:pointer; }
+  .checklist label { cursor:pointer; }
+  .checklist .hint { color:var(--text-dim); font-size:13.5px; display:block; }
+
+  .code { position:relative; background:var(--code-bg); color:var(--code-text); border-radius:12px; padding:14px 16px; overflow-x:auto; font-size:13px; line-height:1.55; border:1px solid rgba(255,255,255,.06); }
+  .code pre { margin:0; white-space:pre; }
+  .copy { position:absolute; top:8px; right:8px; font-size:12px; cursor:pointer; background:rgba(255,255,255,.1); color:#fff; border:1px solid rgba(255,255,255,.18); border-radius:7px; padding:4px 9px; }
+  .copy:hover { background:rgba(255,255,255,.2); }
+  .cmt { color:#8b93a7; }
+
+  .tablewrap { overflow-x:auto; border:1px solid var(--border); border-radius:12px; }
+  table { border-collapse:collapse; width:100%; font-size:14px; min-width:560px; }
+  th,td { text-align:left; padding:11px 14px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th { background:var(--surface-2); font-weight:600; }
+  tr:last-child td { border-bottom:none; }
+  td code, td b code { background:var(--surface-2); padding:1px 6px; border-radius:5px; }
+  .pw { display:block; margin-bottom:4px; }
+  .pd { display:block; color:var(--text-dim); font-size:13.5px; }
+
+  details.acc { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:0; margin-top:12px; overflow:hidden; }
+  details.acc > summary { cursor:pointer; padding:14px 16px; font-weight:600; list-style:none; display:flex; align-items:center; gap:10px; }
+  details.acc > summary::-webkit-details-marker { display:none; }
+  details.acc > summary::before { content:"▸"; color:var(--accent-2); transition:transform .15s; }
+  details.acc[open] > summary::before { transform:rotate(90deg); }
+  details.acc > summary .mnum { font-size:12px; font-weight:700; color:#fff; background:linear-gradient(135deg,var(--accent),var(--accent-2)); border-radius:6px; padding:1px 8px; }
+  details.acc .body { padding:0 16px 16px; }
+  .chk { margin-top:12px; border-left:3px solid var(--ok); background:color-mix(in srgb, var(--ok) 10%, transparent); border-radius:0 8px 8px 0; padding:8px 12px; font-size:14px; }
+
+  .subhead { margin:22px 0 4px; font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--text-dim); font-weight:700; }
+  .mock { background:var(--code-bg); color:var(--code-text); border-radius:12px; padding:14px 16px; font-size:12.5px; line-height:1.5; overflow-x:auto; }
+  .mock pre { margin:0; white-space:pre; }
+  footer { max-width:var(--maxw); margin:0 auto; padding:28px 20px 60px; color:var(--text-dim); font-size:13.5px; border-top:1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><span class="logo">2</span> Build Site Snapshot</div>
+    <nav class="nav" aria-label="Section navigation">
+      <a class="home" href="index.html">&larr; Hub</a>
+      <a href="#build">What you build</a>
+      <a href="#libs">Libraries</a>
+      <a href="#arch">Architecture</a>
+      <a href="#tree">Structure</a>
+      <a href="#milestones">Milestones</a>
+      <a href="#accept">Test</a>
+    </nav>
+    <button class="theme-btn" id="themeBtn" title="Toggle theme" aria-label="Toggle light/dark theme">◐</button>
+  </div>
+</header>
+
+<main>
+
+  <div class="hero">
+    <span class="badge"><span class="dot"></span> Vol 2 Build-along</span>
+    <h1>Build <span class="grad">Site Snapshot</span>, step by step</h1>
+    <p>A hands-on build of a real SharePoint governance Copilot App, with a clean folder structure and a Microsoft-native look. You will use Fluent UI, PnPjs, and the PnP React controls, build the UI on sample data first, then wire real Graph data behind a clean seam.</p>
+    <div class="hero-meta">
+      <span class="chip"><b>Fluent UI</b> v8</span>
+      <span class="chip"><b>PnPjs</b> v4</span>
+      <span class="chip"><b>PnP</b> controls</span>
+      <span class="chip"><b>inline</b> + <b>fullscreen</b></span>
+      <span class="chip"><b>3</b> tools</span>
+    </div>
+    <div class="callout">Finish the Vol 1 setup first (Node 22, the preview generator, a tenant, and the Copilot Workbench). See <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/01-prerequisites.md" target="_blank" rel="noopener">docs/01-prerequisites</a>. The spec behind this build is <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/scenario-01-site-snapshot.md" target="_blank" rel="noopener">docs/scenario-01</a>.</div>
+  </div>
+
+  <!-- WHAT YOU BUILD -->
+  <section id="build">
+    <h2><span class="num">01</span> What you will build</h2>
+    <p class="lead">One agent with two faces. A compact card in the chat, and a full dashboard when you open it.</p>
+    <div class="grid cols-2">
+      <div>
+        <div class="subhead">Inline (in the chat)</div>
+        <div class="mock"><pre>&#9679; Site Snapshot - Project Aurora
+   Health 72   (Watch)
+   Storage  ####------  4.2 / 25 GB
+   3 stale     2 external shares
+   [ Open breakdown ]</pre></div>
+      </div>
+      <div>
+        <div class="subhead">Fullscreen (the app)</div>
+        <div class="mock"><pre>Project Aurora            ( 72 )  Watch
+[ Export CSV ]  [ Email me this ]
+Storage  ########--  4.2/25 GB
+Storage 20  Freshness 24  Sharing 18  Activity 15
+| Stale docs (3) | External (2) | Largest (3) |
+  file.docx      2023-02-11
+  budget.xlsx    ext@acme.com</pre></div>
+      </div>
+    </div>
+    <p class="subhead">The three tools</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Tool</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><code>analyzeSite</code></td><td>Analyses a site and returns the snapshot (storage, stale docs, external sharing, largest files) with a health score.</td></tr>
+          <tr><td><code>exportSnapshot</code></td><td>Downloads the detail rows as a CSV file.</td></tr>
+          <tr><td><code>emailSnapshot</code></td><td>Emails a readable summary to the user. This is the real side effect.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- LIBRARIES -->
+  <section id="libs">
+    <h2><span class="num">02</span> Libraries we use, and why</h2>
+    <p class="lead">Common Microsoft libraries so the result looks native and you write less code.</p>
+    <div class="grid cols-3">
+      <div class="card"><h3>Fluent UI v8</h3><p>The Microsoft control set: <code>DetailsList</code>, <code>Pivot</code>, <code>CommandBar</code>, <code>ProgressIndicator</code>, <code>Persona</code>, <code>MessageBar</code>. Import per module to keep the bundle small.</p></div>
+      <div class="card"><h3>PnP React controls</h3><p><code>@pnp/spfx-controls-react</code>. We use <code>FileTypeIcon</code> for native file icons. Only context-free controls are safe inside a Copilot component.</p></div>
+      <div class="card"><h3>PnPjs v4</h3><p><code>@pnp/graph</code> for the Graph reads (site, drive, items, permissions) and <code>me.sendMail</code>. Clean, typed, and familiar from your web parts.</p></div>
+    </div>
+    <div class="code" style="margin-top:14px"><button class="copy">Copy</button><pre><span class="cmt"># install the libraries (Fluent UI is usually already present)</span>
+npm install @fluentui/react@^8 @pnp/sp@^4 @pnp/graph@^4 @pnp/spfx-controls-react@^3</pre></div>
+    <div class="callout warn"><b>Version reality.</b> <code>@pnp/spfx-controls-react</code> v3 officially reaches SPFx 1.23 and is not yet validated on 1.24 with React 18. Install the latest v3, use only context-free controls (like <code>FileTypeIcon</code>) inside a Copilot component, and test carefully. Fluent UI must be v8, not v9.</div>
+  </section>
+
+  <!-- ARCHITECTURE -->
+  <section id="arch">
+    <h2><span class="num">03</span> The architecture: presentation-first</h2>
+    <p class="lead">The most important decision in this build, and it is about honesty with the preview.</p>
+    <div class="callout warn"><b>Why not just call Graph from the component?</b> A Copilot component's context is only documented to expose <code>domElement</code>, <code>hostContext</code> (theme and display mode), and <code>requestDisplayModeAsync</code>. It is <b>not</b> documented to expose the token or Graph factories that PnPjs needs, so calling Graph directly from the component may not work in the Copilot canvas in preview.</div>
+    <p style="margin-top:16px">So the UI never talks to Graph. It depends on a small seam, and two implementations satisfy it. You build and demo the whole UI on mock data, then swap in the real one by changing a single line.</p>
+    <div class="flow">
+      <div class="node"><div class="k">UI</div><h4>Components</h4><p>Inline card and fullscreen dashboard. They only know the seam.</p></div>
+      <div class="node"><div class="k">Seam</div><h4>ISnapshotDataSource</h4><p>resolveSite, getStorage, scanItems, sendMail.</p></div>
+      <div class="node"><div class="k">Build first</div><h4>MockDataSource</h4><p>Sample data. No tenant, no permissions. UI works from M1.</p></div>
+      <div class="node"><div class="k">Then swap</div><h4>GraphDataSource</h4><p>PnPjs Graph. One line change. Verify in preview; fall back to AadHttpClient if the context cannot bind.</p></div>
+    </div>
+  </section>
+
+  <!-- STRUCTURE -->
+  <section id="tree">
+    <h2><span class="num">04</span> The folder structure</h2>
+    <p class="lead">A clean layer per job, the way a real SPFx app is organised. The full skeleton is in <a href="https://github.com/tvahk/spfx-copilot-learning-hub/tree/main/reference/scenario-site-snapshot/" target="_blank" rel="noopener">reference/scenario-site-snapshot/</a>.</p>
+    <div class="code"><button class="copy">Copy</button><pre>src/copilotComponents/siteSnapshot/
+  SiteSnapshotCopilotComponent.ts          <span class="cmt"># thin class (entry point)</span>
+  SiteSnapshotCopilotComponent.manifest.json
+  SiteSnapshotCopilotComponentProperties.ts <span class="cmt"># Zod tool schemas</span>
+  components/
+    SiteSnapshotApp.tsx (+ .module.scss)   <span class="cmt"># ThemeProvider; inline vs fullscreen</span>
+    inline/ScoreCard.tsx (+ .module.scss)
+    fullscreen/
+      Dashboard.tsx (+ .module.scss)
+      ScoreRing.tsx  StorageBar.tsx  SubScoreBars.tsx
+      DetailPanel.tsx (+ .module.scss)
+  services/
+    dataSource.ts        <span class="cmt"># the seam</span>
+    mockDataSource.ts    <span class="cmt"># sample data</span>
+    graphDataSource.ts   <span class="cmt"># PnPjs Graph</span>
+    siteSnapshotService.ts
+  models/  health.ts  types.ts  colors.ts  health.test.ts
+  utils/   formatters.ts  cache.ts  csvExport.ts  errorMessages.ts
+  hooks/useSnapshot.ts
+  loc/  en-us.js  mystrings.d.ts
+copilot/  declarativeAgent.json  ai-plugin.json  instruction.txt  manifest.json</pre></div>
+    <div class="tablewrap" style="margin-top:14px">
+      <table>
+        <thead><tr><th>Folder</th><th>What it holds and why</th></tr></thead>
+        <tbody>
+          <tr><td><code>components/</code></td><td><b class="pw">Your React UI, split by display mode.</b><span class="pd">The <code>inline/</code> card and the <code>fullscreen/</code> dashboard. Built from Fluent controls, laid out with SCSS modules.</span></td></tr>
+          <tr><td><code>services/</code></td><td><b class="pw">Data access behind a seam.</b><span class="pd">The <code>ISnapshotDataSource</code> interface, a mock and a PnPjs implementation, and the orchestration that turns either into a snapshot.</span></td></tr>
+          <tr><td><code>models/</code></td><td><b class="pw">Types, scoring, and shared colors.</b><span class="pd">The pure <code>health.ts</code> scoring and its tests, the domain <code>types.ts</code>, and <code>colors.ts</code> with the shared button styles.</span></td></tr>
+          <tr><td><code>utils/</code></td><td><b class="pw">Small shared helpers.</b><span class="pd"><code>formatDate</code>, a TTL <code>cache</code>, <code>csvExport</code>, and <code>getFriendlyError</code>. Defined once, imported everywhere.</span></td></tr>
+          <tr><td><code>hooks/</code></td><td><b class="pw">React data binding.</b><span class="pd"><code>useSnapshot</code> wraps the service in loading, error, and result state.</span></td></tr>
+          <tr><td><code>loc/</code></td><td><b class="pw">Localized strings.</b><span class="pd">The standard SPFx pattern, so UI text is translatable.</span></td></tr>
+          <tr><td><code>copilot/</code></td><td><b class="pw">The declarative agent.</b><span class="pd">The agent definition, plugin, instructions, and app manifest that make the tools callable in Copilot.</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- CONVENTIONS -->
+  <section id="conventions">
+    <h2><span class="num">05</span> Conventions we follow</h2>
+    <p class="lead">The same rules you use on your own SPFx apps. Full list in <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/05-best-practices.md" target="_blank" rel="noopener">docs/05</a>.</p>
+    <div class="grid cols-2">
+      <div class="card"><h3>SCSS modules, not inline styles</h3><p>Layout and spacing live in <code>.module.scss</code> files. Fluent themes the controls. The only inline style is a CSS variable driven by data, like the score ring fill.</p></div>
+      <div class="card"><h3>One service per domain</h3><p>All data access sits in <code>services/</code> behind the seam. Components never call Graph.</p></div>
+      <div class="card"><h3>Shared utils and colors</h3><p>Format dates with <code>formatDate</code>, style buttons from <code>BUTTON_STYLES</code>. Never redefine them locally.</p></div>
+      <div class="card"><h3>Hooks at the top</h3><p>Every hook is declared before any early return, and no component is defined inside another's render. This avoids the React #300 error.</p></div>
+      <div class="card"><h3>Deterministic and throttle-safe</h3><p>Pass the clock in rather than reading it inside. Cap the item scan, batch permission checks, cache reads, and report when results are capped.</p></div>
+      <div class="card"><h3>Bundle discipline</h3><p>Import Fluent per module. Keep heavy extras like a chart library out of the initial bundle with a dynamic import.</p></div>
+    </div>
+  </section>
+
+  <!-- MILESTONES -->
+  <section id="milestones">
+    <h2><span class="num">06</span> Build it in milestones</h2>
+    <p class="lead">Each milestone leaves you with something that runs. Expand one at a time.</p>
+
+    <details class="acc" open>
+      <summary><span class="mnum">M0</span> Plumbing and dependencies</summary>
+      <div class="body">
+        <p>Scaffold a Copilot Component (React) as in <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/02-scaffold-first-agent.md" target="_blank" rel="noopener">docs/02</a>, install the libraries, and get a thin class rendering a placeholder in both display modes.</p>
+        <div class="code"><button class="copy">Copy</button><pre><span class="cmt">// SiteSnapshotCopilotComponent.ts - keep it thin</span>
+export default class SiteSnapshotCopilotComponent
+  extends BaseCopilotComponent&lt;typeof AnalyzeSiteProperties&gt; {
+  public render(): void {
+    const args = this.properties as AnalyzeSiteArgs;
+    const isFullscreen = this.hostContext.displayMode === 'fullscreen';
+    const isDark = this.hostContext.theme === 'dark';
+    ReactDOM.render(
+      React.createElement(SiteSnapshotApp, {
+        siteUrl: args.siteUrl, staleMonths: args.staleMonths ?? 6, topN: args.topN ?? 10,
+        isFullscreen, isDark, onRequestFullscreen: this._goFullscreen,
+      }),
+      this.context.domElement
+    );
+  }
+  private _goFullscreen = async () =&gt; { try { await this.requestDisplayModeAsync('fullscreen'); } catch {} };
+  protected onHostContextChanged(): void { this.render(); }
+}</pre></div>
+        <div class="chk"><b>Checkpoint:</b> run <code>npx heft start --nobrowser</code>, open the Copilot Workbench, and see your placeholder render inline and fullscreen.</div>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary><span class="mnum">M1</span> The inline card on mock data</summary>
+      <div class="body">
+        <p>Add the domain types, the pure scoring (test it first), the data seam with a mock, the hook, and the inline card. The UI works with no tenant.</p>
+        <div class="code"><button class="copy">Copy</button><pre><span class="cmt">// services/dataSource.ts - the seam the UI depends on</span>
+export interface ISnapshotDataSource {
+  resolveSite(siteUrl: string): Promise&lt;IResolvedSite&gt;;
+  getStorage(site: IResolvedSite): Promise&lt;IStorage&gt;;
+  scanItems(site: IResolvedSite, args: IAnalyzeArgs, nowMs: number): Promise&lt;IItemScan&gt;;
+  sendMail(recipient: string, subject: string, html: string): Promise&lt;void&gt;;
+}</pre></div>
+        <div class="code" style="margin-top:10px"><button class="copy">Copy</button><pre><span class="cmt">// components/inline/ScoreCard.tsx - Fluent controls, verdict color via a class</span>
+&lt;Stack tokens={{ childrenGap: 10 }}&gt;
+  &lt;span className={`${styles.scoreBadge} ${verdictClass[verdict]}`}&gt;{score}&lt;/span&gt;
+  &lt;ProgressIndicator label="Storage used"
+    description={`${formatBytes(used)} of ${formatBytes(total)}`}
+    percentComplete={usedPct / 100} /&gt;
+  &lt;PrimaryButton text="Open breakdown" onClick={onOpen} styles={BUTTON_STYLES} /&gt;
+&lt;/Stack&gt;</pre></div>
+        <div class="chk"><b>Checkpoint:</b> run <code>npx jest</code> on <code>health.test.ts</code> (green), then see the real score card in the Workbench, powered by mock data.</div>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary><span class="mnum">M2</span> The fullscreen dashboard</summary>
+      <div class="body">
+        <p>Build the dashboard: a <code>CommandBar</code>, the score ring and sub-score bars, and a <code>Pivot</code> over three <code>DetailPanel</code> lists. Still on mock data.</p>
+        <div class="code"><button class="copy">Copy</button><pre><span class="cmt">// components/fullscreen/DetailPanel.tsx - native file icons via PnP controls</span>
+onRender: (item) =&gt; (
+  &lt;span className={styles.fileCell}&gt;
+    &lt;FileTypeIcon type={IconType.font} path={item.name} /&gt;
+    &lt;Link href={item.webUrl} target="_blank"&gt;{item.name}&lt;/Link&gt;
+  &lt;/span&gt;
+)</pre></div>
+        <div class="chk"><b>Checkpoint:</b> open the breakdown from the inline card and see the full dashboard with three tabs, bars, and file icons.</div>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary><span class="mnum">M3</span> Real data with PnPjs</summary>
+      <div class="body">
+        <p>Implement the same seam with <code>@pnp/graph</code>: resolve the site, read the drive quota, page the item children, and batch the permission checks. Then switch the app to it.</p>
+        <div class="code"><button class="copy">Copy</button><pre><span class="cmt">// services/graphDataSource.ts (preview: verify the context binds; see the file header)</span>
+this.graph = graphfi().using(SPFx(context as any));
+const site = await this.graph.sites.getByUrl(u.hostname, u.pathname)();
+const drive = await this.graph.drives.getById(driveId)();   <span class="cmt">// drive.quota.used / .total</span>
+const children = await drive.root.children.top(200)();       <span class="cmt">// page, cap at 500</span>
+const perms = await drive.items.getById(id).permissions();   <span class="cmt">// batch in tens</span></pre></div>
+        <div class="callout warn">If <code>SPFx(context)</code> does not bind in the Copilot canvas, fall back to <code>AadHttpClient</code>, or move the Graph calls to the agent tool layer and pass results in as properties. Keep the mock source for the Workbench.</div>
+        <div class="chk"><b>Checkpoint:</b> after approving the Graph permissions, run against a real site and see accurate storage, stale, and sharing numbers.</div>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary><span class="mnum">M4</span> CSV export</summary>
+      <div class="body">
+        <p>Add <code>utils/csvExport.ts</code> and wire the <code>exportSnapshot</code> tool to the Export button on the <code>CommandBar</code>. Export is pure client-side, so it needs no data source.</p>
+        <div class="chk"><b>Checkpoint:</b> click Export CSV and get a file with the stale, external, and largest rows.</div>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary><span class="mnum">M5</span> The email action</summary>
+      <div class="body">
+        <p>Add <code>emailSnapshot</code> in the service, sending an HTML summary through the data source (<code>graph.me.sendMail</code>, or the AadHttpClient fallback). Fill in the scenario <code>copilot/ai-plugin.json</code> and <code>instruction.txt</code>.</p>
+        <div class="chk"><b>Checkpoint:</b> ask the agent to email you the snapshot and receive a readable summary.</div>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary><span class="mnum">M6</span> Polish</summary>
+      <div class="body">
+        <p>Add friendly errors and a <code>MessageBar</code> empty state, cache the reads, expose the tool arguments (<code>staleMonths</code>, <code>topN</code>), move text into <code>loc/</code>, refine the theme, and bump the solution version before you deploy.</p>
+        <div class="chk"><b>Checkpoint:</b> a no-access site shows a friendly message, not a stack trace, and the deploy picks up your new version.</div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ACCEPT -->
+  <section id="accept">
+    <h2><span class="num">07</span> Test and accept</h2>
+    <p class="lead">You are done when, against a real site, all of these are true.</p>
+    <ul class="checklist" id="acceptCheck">
+      <li><input type="checkbox" id="a1"><label for="a1"><b>Accurate storage.</b> <span class="hint">The used and quota figures and the health score add up and make sense.</span></label></li>
+      <li><input type="checkbox" id="a2"><label for="a2"><b>An actionable stale list.</b> <span class="hint">Real files with correct dates that you would actually clean up.</span></label></li>
+      <li><input type="checkbox" id="a3"><label for="a3"><b>A reviewable sharing list.</b> <span class="hint">External shares listed, with Anyone links flagged as higher risk.</span></label></li>
+      <li><input type="checkbox" id="a4"><label for="a4"><b>A real email.</b> <span class="hint">You can email yourself the snapshot and receive a readable summary.</span></label></li>
+      <li><input type="checkbox" id="a5"><label for="a5"><b>Graceful failure.</b> <span class="hint">A site you cannot access, or an empty library, shows a friendly message.</span></label></li>
+    </ul>
+    <div class="callout">Deploy the finished app with the steps in <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/docs/04-build-run-deploy.md" target="_blank" rel="noopener">docs/04</a>. The whole skeleton is in <a href="https://github.com/tvahk/spfx-copilot-learning-hub/tree/main/reference/scenario-site-snapshot/" target="_blank" rel="noopener">reference/scenario-site-snapshot/</a>. When you want a hand, point Claude at <a href="https://github.com/tvahk/spfx-copilot-learning-hub/blob/main/CLAUDE.md" target="_blank" rel="noopener">CLAUDE.md</a> and this page.</div>
+  </section>
+
+</main>
+
+<footer>
+  Vol 2 build-along for Site Snapshot. The SPFx Copilot Apps feature is in preview, so verify against your own scaffold and the official Microsoft Learn docs.
+</footer>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var saved = localStorage.getItem('spfxvol2-theme');
+    if (saved) root.setAttribute('data-theme', saved);
+    document.getElementById('themeBtn').addEventListener('click', function () {
+      var cur = root.getAttribute('data-theme');
+      if (!cur) { cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('spfxvol2-theme', next);
+    });
+  })();
+  (function () {
+    var boxes = document.querySelectorAll('#acceptCheck input[type=checkbox]');
+    boxes.forEach(function (b) {
+      var key = 'spfxvol2-' + b.id;
+      if (localStorage.getItem(key) === '1') b.checked = true;
+      b.addEventListener('change', function () { localStorage.setItem(key, b.checked ? '1' : '0'); });
+    });
+  })();
+  (function () {
+    document.querySelectorAll('.copy').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var pre = btn.parentElement.querySelector('pre');
+        var text = pre ? pre.innerText : '';
+        navigator.clipboard.writeText(text).then(function () {
+          var old = btn.textContent; btn.textContent = 'Copied ✓';
+          setTimeout(function () { btn.textContent = old; }, 1400);
+        }).catch(function () { btn.textContent = 'Ctrl+C'; });
+      });
+    });
+  })();
+</script>
+</body>
+</html>

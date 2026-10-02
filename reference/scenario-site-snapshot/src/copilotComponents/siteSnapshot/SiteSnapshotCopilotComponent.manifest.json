@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/copilot-component-manifest.schema.json",
+
+  "_studyNote_root": "Component manifest for Site Snapshot. Remove _studyNote_* keys in a real scaffold. 'id' is a stable GUID. Each tool name must match a function in copilot/ai-plugin.json and a Zod schema export in SiteSnapshotCopilotComponentProperties.ts.",
+
+  "id": "22222222-3333-4444-5555-666666666666",
+  "alias": "SiteSnapshotCopilotComponent",
+
+  "componentType": "CopilotComponent",
+  "copilotType": "Ux",
+  "version": "*",
+  "manifestVersion": 2,
+
+  "capabilities": {
+    "availableDisplayModes": ["inline", "fullscreen"]
+  },
+
+  "tools": [
+    {
+      "name": "analyzeSite",
+      "description": "Analyse a SharePoint site and show a health snapshot (storage, stale docs, external sharing, largest files).",
+      "propertiesSchema": "AnalyzeSiteProperties"
+    },
+    {
+      "name": "exportSnapshot",
+      "description": "Export the current snapshot detail rows to a CSV file.",
+      "propertiesSchema": "ExportSnapshotProperties"
+    },
+    {
+      "name": "emailSnapshot",
+      "description": "Email the current snapshot summary to the user.",
+      "propertiesSchema": "EmailSnapshotProperties"
+    }
+  ],
+
+  "preconfiguredEntries": []
+}

@@ -1,0 +1,47 @@
+// Site Snapshot - fullscreen dashboard layout + score ring.
+// Layout and the semantic score ring live here. Fluent themes the controls.
+
+.commandBar {
+  border: 1px solid #edebe9;
+  border-radius: 6px;
+}
+
+.barsCol {
+  min-width: 260px;
+}
+
+// Score ring: a conic-gradient filled to --pct percent. The verdict class sets
+// the fill color; the track stays neutral.
+.ring {
+  --pct: 0;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex: none;
+  background: conic-gradient(
+    var(--ring-fill, #0f6cbd) calc(var(--pct) * 1%),
+    #edebe9 0
+  );
+}
+
+.ringInner {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background: #ffffff;
+  display: grid;
+  place-items: center;
+}
+
+// Verdict colors drive the ring fill.
+.healthy {
+  --ring-fill: #107c10;
+}
+.watch {
+  --ring-fill: #797775;
+}
+.atRisk {
+  --ring-fill: #a4262c;
+}

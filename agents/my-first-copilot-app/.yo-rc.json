@@ -1,0 +1,18 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "useGulp": false,
+    "plusBeta": true,
+    "isCreatingSolution": true,
+    "nodeVersion": "22.20.0",
+    "sdksVersions": {},
+    "version": "1.24.0-beta.3",
+    "libraryName": "my-first-copilot-app",
+    "libraryId": "38300735-d1a1-4fc5-8c73-ee285c585cda",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "my-first-copilot-app",
+    "solutionShortDescription": "my-first-copilot-app description",
+    "skipFeatureDeployment": true,
+    "componentType": "copilotComponent"
+  }
+}

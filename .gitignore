@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# SPFx / Heft build output
+lib/
+lib-dts/
+lib-commonjs/
+lib-esm/
+dist/
+temp/
+release/
+jest-output/
+.heft/
+sharepoint/solution/
+*.sppkg
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Generated typings
+*.scss.ts
+*.resx.ts
+
+# Editor / OS / local tooling
+.claude/
+.vs/
+.DS_Store
+Thumbs.db

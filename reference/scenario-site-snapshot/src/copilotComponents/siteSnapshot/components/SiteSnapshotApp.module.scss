@@ -1,0 +1,16 @@
+// Site Snapshot - root layout.
+// Layout only. Colors come from the Fluent ThemeProvider (host theme), not
+// from hardcoded values here. This is the SCSS-module convention: className
+// for structure and spacing, Fluent for the themed controls.
+
+.rootInline {
+  padding: 12px;
+  max-width: 380px;
+}
+
+.rootFull {
+  padding: 24px;
+  height: 100%;
+  box-sizing: border-box;
+  overflow-y: auto;
+}

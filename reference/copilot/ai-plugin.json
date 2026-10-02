@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/copilot/plugin/v2.3/schema.json",
+  "schema_version": "v2.3",
+
+  "_studyNote_root": "The PLUGIN definition. It describes your component's tools to the model as callable functions. In a SharePoint Copilot App these functions are wired to the Copilot Component tools declared in the component .manifest.json. Remove _studyNote_* keys in a real scaffold.",
+
+  "name_for_human": "Hello Agent",
+  "description_for_human": "Greets the user and opens a demo dashboard.",
+
+  "_studyNote_functions": "One entry per tool. 'name' MUST match a tool name in HelloAgentCopilotComponent.manifest.json. The parameter shape mirrors the Zod schema in ...Properties.ts — keep them in sync.",
+  "functions": [
+    {
+      "name": "greet",
+      "description": "Greet the user by name and optionally open a full-screen dashboard.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The user's display name to greet."
+          },
+          "openFullscreen": {
+            "type": "boolean",
+            "description": "If true, the component requests full-screen display (the 'open the full app' experience)."
+          }
+        },
+        "required": ["name"]
+      }
+    }
+  ],
+
+  "_studyNote_runtimes": "Ties the function(s) to the SharePoint Copilot App runtime. The toolchain fills specifics from config/copilot-agent.json at build; shown here only to illustrate the linkage.",
+  "runtimes": [
+    {
+      "type": "SharePointCopilotApp",
+      "run_for_functions": ["greet"]
+    }
+  ]
+}
